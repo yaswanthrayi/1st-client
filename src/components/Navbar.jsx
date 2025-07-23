@@ -18,6 +18,7 @@ export default function Navbar() {
   return (
     <nav className="bg-gray-800 text-white fixed top-0 left-0 w-full z-50 shadow-lg transition-all duration-500">
       <div className="w-full px-4 sm:px-6 lg:px-8">
+        {/* Navbar content */}
         <div className="flex justify-between items-center h-24">
           {/* Logo with Profile Image */}
           <div className="flex items-center space-x-3 animate-fade-in">
@@ -66,30 +67,30 @@ export default function Navbar() {
             </button>
           </div>
         </div>
-
-        {/* Mobile Nav */}
-        {isMenuOpen && (
-          <div className="md:hidden border-t border-gray-700 mt-2 animate-slide-down">
-            <div className="flex flex-col space-y-2 py-2">
-              {navItems.map((item, idx) => (
-                <Link
-                  key={item.name}
-                  to={item.path}
-                  onClick={() => setIsMenuOpen(false)}
-                  className={`block px-4 py-3 text-base font-medium rounded-md transition-all duration-300 ${
-                    isActive(item.path)
-                      ? "text-gray-800 bg-white shadow-md scale-105"
-                      : "text-white hover:text-blue-400 hover:bg-gray-700"
-                  }`}
-                  style={{ transitionDelay: `${idx * 60}ms` }}
-                >
-                  {item.name}
-                </Link>
-              ))}
-            </div>
-          </div>
-        )}
       </div>
+
+      {/* Mobile Nav Dropdown */}
+      {isMenuOpen && (
+        <div className="md:hidden bg-gray-800 border-t border-gray-700 animate-slide-down px-4 pb-4">
+          <div className="flex flex-col space-y-2 pt-2">
+            {navItems.map((item, idx) => (
+              <Link
+                key={item.name}
+                to={item.path}
+                onClick={() => setIsMenuOpen(false)}
+                className={`block px-4 py-3 text-base font-medium rounded-md transition-all duration-300 ${
+                  isActive(item.path)
+                    ? "text-gray-800 bg-white shadow-md scale-105"
+                    : "text-white hover:text-blue-400 hover:bg-gray-700"
+                }`}
+                style={{ transitionDelay: `${idx * 60}ms` }}
+              >
+                {item.name}
+              </Link>
+            ))}
+          </div>
+        </div>
+      )}
 
       {/* Animations */}
       <style>
