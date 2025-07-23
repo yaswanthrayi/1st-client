@@ -48,7 +48,7 @@ export default function Navbar() {
             <div className="flex items-center space-x-1 sm:space-x-3 animate-fade-in flex-1 min-w-0 mr-2">
               <div className="rounded-full overflow-hidden shadow-lg w-8 h-8 sm:w-10 sm:h-10 lg:w-14 lg:h-14 border-2 border-white/20 hover:border-blue-400/50 transition-all duration-300">
                 <img
-                  src="/459902806_372615092587312_5139707910920786418_n.jpg"
+                  src="/sai.jpg"
                   alt="Sai"
                   className="w-full h-full object-cover hover:scale-110 transition-transform duration-300"
                 />
