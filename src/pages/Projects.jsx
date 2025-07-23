@@ -60,6 +60,65 @@ export default function Projects() {
         <p className="text-lg md:text-2xl text-gray-600 mb-12 text-center">
           Explore our latest real estate projects. Each project is crafted with care, quality, and a vision for the future.
         </p>
+  {/* Embedded Videos Section */}
+<div className="mb-12 px-2 md:px-10">
+  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+    {/* Video 1 */}
+    <div className="relative pb-[56.25%] h-0 rounded-2xl overflow-hidden shadow-xl border-4 border-blue-200">
+      <iframe
+        className="absolute top-0 left-0 w-full h-full"
+        src="https://www.youtube.com/embed/UqVlilFyBgE"
+        title="YouTube video 1"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+        allowFullScreen
+      ></iframe>
+    </div>
+
+    {/* Video 2 */}
+    <div className="relative pb-[56.25%] h-0 rounded-2xl overflow-hidden shadow-xl border-4 border-blue-200">
+      <iframe
+        className="absolute top-0 left-0 w-full h-full"
+        src="https://www.youtube.com/embed/rfI6MRoHaWE"
+        title="YouTube video 2"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+        allowFullScreen
+      ></iframe>
+    </div>
+
+    {/* Video 3 */}
+    <div className="relative pb-[56.25%] h-0 rounded-2xl overflow-hidden shadow-xl border-4 border-blue-200">
+      <iframe
+        className="absolute top-0 left-0 w-full h-full"
+        src="https://www.youtube.com/embed/_DA7hIm5tJM"
+        title="YouTube video 3"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+        allowFullScreen
+      ></iframe>
+    </div>
+
+    {/* Video 4 */}
+    <div className="relative pb-[56.25%] h-0 rounded-2xl overflow-hidden shadow-xl border-4 border-blue-200">
+      <iframe
+        className="absolute top-0 left-0 w-full h-full"
+        src="https://www.youtube.com/embed/--Cd2r4LEbM"
+        title="YouTube video 4"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+        allowFullScreen
+      ></iframe>
+    </div>
+
+    {/* Video 5 */}
+    <div className="relative pb-[56.25%] h-0 rounded-2xl overflow-hidden shadow-xl border-4 border-blue-200">
+      <iframe
+        className="absolute top-0 left-0 w-full h-full"
+        src="https://www.youtube.com/embed/tww3iq5OtKU"
+        title="YouTube video 5"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+        allowFullScreen
+      ></iframe>
+    </div>
+  </div>
+</div>
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8 px-2 md:px-10">
           {projectImages.map((src, idx) => (
             <div
