@@ -99,8 +99,8 @@ const Contact = () => {
             </svg>
           </div>
           <div className="w-full flex justify-center mb-10">
-            <iframe
-              src="https://docs.google.com/forms/d/e/1FAIpQLSccICcCwNmuQcB59FbC2i0BNkKXPzk9ePAj_wPDDXp8s7cGLw/viewform?embedded=true"
+              <iframe
+              src="https://docs.google.com/forms/d/1BTpoyO8_tDlp8VPiNTZEltwKcERagUGrl6lkIN_v9Ug/viewform?pli=1&pli=1&edit_requested=true"
               width="100%"
               height="700"
               frameBorder="0"
@@ -109,10 +109,11 @@ const Contact = () => {
               title="Contact Form"
               className="rounded-xl border-2 border-blue-200 shadow w-full bg-white"
               style={{ minWidth: "100vw", maxWidth: "100vw", display: "block", margin: "0", padding: "0" }}
-            >
+              >
               Loading…
-            </iframe>
+              </iframe>
           </div>
+
           {/* Google Map Embed */}
           <div className="w-full flex justify-center">
             <iframe

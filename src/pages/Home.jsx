@@ -25,7 +25,7 @@ export default function Home() {
       {/* Google Form Full Width */}
       <div className="w-screen px-4 mb-16 flex justify-center">
         <iframe
-          src="https://docs.google.com/forms/d/e/1FAIpQLSccICcCwNmuQcB59FbC2i0BNkKXPzk9ePAj_wPDDXp8s7cGLw/viewform?embedded=true"
+          src="https://docs.google.com/forms/d/1BTpoyO8_tDlp8VPiNTZEltwKcERagUGrl6lkIN_v9Ug/viewform?pli=1&pli=1&edit_requested=true"
           width="100%"
           height="700"
           frameBorder="0"

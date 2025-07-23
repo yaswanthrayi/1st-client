@@ -28,9 +28,9 @@ export default function About() {
         {/* Profile Image at the Top */}
         <div className="flex justify-center mb-8">
           <img
-            src="/459902806_372615092587312_5139707910920786418_n.jpg"
+            src="/satyam-sai.jpg"
             alt="Profile"
-            className="w-48 h-48 rounded-full object-cover shadow-lg border-4 border-blue-200"
+            className="w-52 h-52 rounded-full object-cover shadow-lg border-4 border-blue-200"
           />
         </div>
 
