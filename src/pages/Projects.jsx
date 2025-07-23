@@ -117,8 +117,42 @@ export default function Projects() {
         allowFullScreen
       ></iframe>
     </div>
+
+    {/* Video 6 */}
+    <div className="relative pb-[56.25%] h-0 rounded-2xl overflow-hidden shadow-xl border-4 border-blue-200">
+      <iframe
+        className="absolute top-0 left-0 w-full h-full"
+        src="https://www.youtube.com/embed/i7XiuqmUx9M"
+        title="YouTube video 6"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+        allowFullScreen
+      ></iframe>
+    </div>
+
+    {/* Video 7 */}
+    <div className="relative pb-[56.25%] h-0 rounded-2xl overflow-hidden shadow-xl border-4 border-blue-200">
+      <iframe
+        className="absolute top-0 left-0 w-full h-full"
+        src="https://www.youtube.com/embed/hijFsJg9qoE"
+        title="YouTube video 7"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+        allowFullScreen
+      ></iframe>
+    </div>
+
+    {/* Video 8 */}
+    <div className="relative pb-[56.25%] h-0 rounded-2xl overflow-hidden shadow-xl border-4 border-blue-200">
+      <iframe
+        className="absolute top-0 left-0 w-full h-full"
+        src="https://www.youtube.com/embed/y2scrZrjcKk"
+        title="YouTube video 8"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+        allowFullScreen
+      ></iframe>
+    </div>
   </div>
 </div>
+
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8 px-2 md:px-10">
           {projectImages.map((src, idx) => (
             <div
