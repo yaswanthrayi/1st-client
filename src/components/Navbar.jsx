@@ -54,12 +54,12 @@ export default function Navbar() {
                 />
               </div>
               
-              {/* Text Container - Constrained width on mobile */}
-              <div className="flex flex-col min-w-0 max-w-[120px] sm:max-w-none">
-                <h1 className="text-[10px] xs:text-xs sm:text-sm md:text-base lg:text-lg font-bold text-white leading-tight tracking-wide truncate">
+              {/* Text Container - Full name visible on mobile */}
+              <div className="flex flex-col min-w-0">
+                <h1 className="text-xs sm:text-sm md:text-base lg:text-lg font-bold text-white leading-tight tracking-wide whitespace-nowrap">
                   SATYAMSAI
                 </h1>
-                <span className="text-[8px] xs:text-[9px] sm:text-xs text-blue-300/80 uppercase tracking-wider truncate">
+                <span className="text-[10px] sm:text-xs text-blue-300/80 uppercase tracking-wider whitespace-nowrap">
                   Realestates
                 </span>
               </div>
@@ -95,12 +95,12 @@ export default function Navbar() {
                 e.stopPropagation();
                 setIsMenuOpen(!isMenuOpen);
               }}
-              className="md:hidden p-2 rounded-lg text-white hover:text-blue-300 hover:bg-white/10 focus:outline-none focus:ring-2 focus:ring-blue-500/50 transition-all duration-300"
+              className="md:hidden p-1.5 sm:p-2 rounded-lg text-white hover:text-blue-300 hover:bg-white/10 focus:outline-none focus:ring-2 focus:ring-blue-500/50 transition-all duration-300 flex-shrink-0 ml-2"
               aria-label="Toggle menu"
             >
-              <div className="relative w-6 h-6">
-                <Menu className={`absolute inset-0 w-6 h-6 transition-all duration-300 ${isMenuOpen ? 'opacity-0 rotate-180' : 'opacity-100 rotate-0'}`} />
-                <X className={`absolute inset-0 w-6 h-6 transition-all duration-300 ${isMenuOpen ? 'opacity-100 rotate-0' : 'opacity-0 -rotate-180'}`} />
+              <div className="relative w-5 h-5 sm:w-6 sm:h-6">
+                <Menu className={`absolute inset-0 w-5 h-5 sm:w-6 sm:h-6 transition-all duration-300 ${isMenuOpen ? 'opacity-0 rotate-180' : 'opacity-100 rotate-0'}`} />
+                <X className={`absolute inset-0 w-5 h-5 sm:w-6 sm:h-6 transition-all duration-300 ${isMenuOpen ? 'opacity-100 rotate-0' : 'opacity-0 -rotate-180'}`} />
               </div>
             </button>
           </div>
@@ -212,6 +212,13 @@ export default function Navbar() {
           .xs\\:text-xs { font-size: 0.75rem; }
           .xs\\:text-\\[9px\\] { font-size: 9px; }
         }
+
+       /* Ensure proper spacing on very small screens */
+       @media (max-width: 320px) {
+         .space-x-2 > :not([hidden]) ~ :not([hidden]) {
+           margin-left: 0.25rem;
+         }
+       }
       `}</style>
     </>
   );
