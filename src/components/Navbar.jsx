@@ -45,7 +45,7 @@ export default function Navbar() {
           <div className="flex justify-between items-center h-14 sm:h-16 lg:h-20">
             
             {/* Logo Section - Fixed width to prevent overflow */}
-            <div className="flex items-center space-x-2 sm:space-x-3 animate-fade-in">
+            <div className="flex items-center space-x-1 sm:space-x-3 animate-fade-in flex-1 min-w-0 mr-2">
               <div className="rounded-full overflow-hidden shadow-lg w-8 h-8 sm:w-10 sm:h-10 lg:w-14 lg:h-14 border-2 border-white/20 hover:border-blue-400/50 transition-all duration-300">
                 <img
                   src="/459902806_372615092587312_5139707910920786418_n.jpg"
@@ -54,12 +54,12 @@ export default function Navbar() {
                 />
               </div>
               
-              {/* Text Container - Full name visible on mobile */}
-              <div className="flex flex-col min-w-0">
-                <h1 className="text-xs sm:text-sm md:text-base lg:text-lg font-bold text-white leading-tight tracking-wide whitespace-nowrap">
+              {/* Text Container - Smaller on mobile */}
+              <div className="flex flex-col min-w-0 overflow-hidden">
+                <h1 className="text-[10px] sm:text-sm md:text-base lg:text-lg font-bold text-white leading-tight tracking-wide truncate">
                   SATYAMSAI
                 </h1>
-                <span className="text-[10px] sm:text-xs text-blue-300/80 uppercase tracking-wider whitespace-nowrap">
+                <span className="text-[8px] sm:text-xs text-blue-300/80 uppercase tracking-wider truncate">
                   Realestates
                 </span>
               </div>
@@ -95,12 +95,12 @@ export default function Navbar() {
                 e.stopPropagation();
                 setIsMenuOpen(!isMenuOpen);
               }}
-              className="md:hidden p-1.5 sm:p-2 rounded-lg text-white hover:text-blue-300 hover:bg-white/10 focus:outline-none focus:ring-2 focus:ring-blue-500/50 transition-all duration-300 flex-shrink-0 ml-2"
+              className="md:hidden p-2 rounded-lg text-white hover:text-blue-300 hover:bg-white/10 focus:outline-none focus:ring-2 focus:ring-blue-500/50 transition-all duration-300 flex-shrink-0"
               aria-label="Toggle menu"
             >
-              <div className="relative w-5 h-5 sm:w-6 sm:h-6">
-                <Menu className={`absolute inset-0 w-5 h-5 sm:w-6 sm:h-6 transition-all duration-300 ${isMenuOpen ? 'opacity-0 rotate-180' : 'opacity-100 rotate-0'}`} />
-                <X className={`absolute inset-0 w-5 h-5 sm:w-6 sm:h-6 transition-all duration-300 ${isMenuOpen ? 'opacity-100 rotate-0' : 'opacity-0 -rotate-180'}`} />
+              <div className="relative w-6 h-6">
+                <Menu className={`absolute inset-0 w-6 h-6 transition-all duration-300 ${isMenuOpen ? 'opacity-0 rotate-180' : 'opacity-100 rotate-0'}`} />
+                <X className={`absolute inset-0 w-6 h-6 transition-all duration-300 ${isMenuOpen ? 'opacity-100 rotate-0' : 'opacity-0 -rotate-180'}`} />
               </div>
             </button>
           </div>
@@ -213,12 +213,12 @@ export default function Navbar() {
           .xs\\:text-\\[9px\\] { font-size: 9px; }
         }
 
-       /* Ensure proper spacing on very small screens */
-       @media (max-width: 320px) {
-         .space-x-2 > :not([hidden]) ~ :not([hidden]) {
-           margin-left: 0.25rem;
-         }
-       }
+        /* Ensure proper spacing on very small screens */
+        @media (max-width: 320px) {
+          .space-x-1 > :not([hidden]) ~ :not([hidden]) {
+            margin-left: 0.125rem;
+          }
+        }
       `}</style>
     </>
   );
