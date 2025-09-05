@@ -12,6 +12,7 @@ export default function Navbar() {
     { name: "Home", path: "/" },
     { name: "About", path: "/about" },
     { name: "Projects", path: "/projects" },
+    { name: "Gallery", path: "/gallery" },
     { name: "Contact", path: "/contact" },
   ];
 
@@ -39,37 +40,40 @@ export default function Navbar() {
       <nav
         className={`fixed top-0 left-0 w-full z-50 transition-all duration-300 ${
           scrolled
-            ? "bg-gray-900/90 backdrop-blur-md shadow-xl"
-            : "bg-gradient-to-r from-gray-800 via-gray-900 to-gray-800"
+            ? "bg-amber-800/95 backdrop-blur-md shadow-xl border-b border-amber-600/30"
+            : "bg-gradient-to-r from-amber-700 via-amber-800 to-amber-700"
         }`}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
-            {/* Logo */}
-            <div className="flex items-center space-x-3">
+{/* Logo */}
+<div className="flex items-center space-x-3">
   <img
     src="/channels4_profile.jpg"
     alt="Logo"
-    className="w-10 h-10 rounded-full object-cover border-2 border-white/20"
+    className="w-10 h-10 rounded-full object-cover border-2 border-yellow-300/40 shadow-lg"
   />
   <div className="leading-tight text-white">
-    <h1 className="text-sm font-bold tracking-wide truncate">SATYAMSAI</h1>
-    <p className="text-lg font-extrabold text-cyan-300 uppercase tracking-widest truncate">
+    <h1 className="text-2xl font-extrabold tracking-wide truncate text-yellow-100 font-heading">
+      SATYAMSAI
+    </h1>
+    <p className="text-sm font-bold text-yellow-300 uppercase tracking-widest truncate drop-shadow-sm font-inter">
       Realestates
     </p>
   </div>
 </div>
 
+
             {/* Desktop Nav */}
-            <div className="hidden md:flex space-x-6 items-center">
+            <div className="hidden md:flex space-x-2 items-center">
               {navItems.map((item) => (
                 <Link
                   key={item.name}
                   to={item.path}
-                  className={`text-sm font-medium px-3 py-2 rounded-md transition-all duration-200 ${
+                  className={`text-sm font-medium px-4 py-2 rounded-lg transition-all duration-200 ${
                     isActive(item.path)
-                      ? "bg-white text-gray-900 shadow font-semibold"
-                      : "text-white hover:bg-white/10 hover:text-blue-300"
+                      ? "bg-yellow-300 text-amber-900 shadow-lg font-semibold transform scale-105"
+                      : "text-yellow-100 hover:bg-amber-600/50 hover:text-yellow-200 hover:shadow-md"
                   }`}
                 >
                   {item.name}
@@ -81,7 +85,7 @@ export default function Navbar() {
             <div className="md:hidden">
               <button
                 onClick={() => setIsMenuOpen(!isMenuOpen)}
-                className="text-white p-2 rounded-md hover:bg-white/10 transition-all"
+                className="text-yellow-100 p-2 rounded-md hover:bg-amber-600/50 hover:text-yellow-200 transition-all duration-200 shadow-sm"
                 aria-label="Toggle menu"
               >
                 {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
@@ -97,7 +101,7 @@ export default function Navbar() {
             isMenuOpen ? "max-h-96 opacity-100" : "max-h-0 opacity-0"
           }`}
         >
-          <div className="bg-gray-900 px-4 py-4 space-y-2 shadow-xl border-t border-gray-700">
+          <div className="bg-amber-800 px-4 py-4 space-y-2 shadow-xl border-t border-amber-600/50">
             {navItems.map((item) => (
               <Link
                 key={item.name}
@@ -105,8 +109,8 @@ export default function Navbar() {
                 onClick={() => setIsMenuOpen(false)}
                 className={`block px-4 py-3 rounded-lg text-sm font-medium transition-all duration-200 ${
                   isActive(item.path)
-                    ? "bg-white text-gray-900 shadow font-semibold"
-                    : "text-white hover:bg-white/10 hover:text-blue-300"
+                    ? "bg-yellow-300 text-amber-900 shadow-lg font-semibold"
+                    : "text-yellow-100 hover:bg-amber-600/50 hover:text-yellow-200 hover:shadow-md"
                 }`}
               >
                 {item.name}

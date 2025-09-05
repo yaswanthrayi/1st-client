@@ -1,5 +1,7 @@
 // Contact.jsx
-import React from "react";
+import React, { useState } from "react";
+import { Phone, Mail, MapPin, Send, User, MessageSquare, CheckCircle, AlertCircle } from "lucide-react";
+import { supabase } from '../lib/supabase';
 
 const socialLinks = [
   {
@@ -8,6 +10,15 @@ const socialLinks = [
     icon: (
       <svg className="w-6 h-6 text-blue-600" fill="currentColor" viewBox="0 0 24 24">
         <path d="M22 12c0-5.522-4.477-10-10-10S2 6.478 2 12c0 5 3.657 9.127 8.438 9.877v-6.987h-2.54v-2.89h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.242 0-1.632.771-1.632 1.562v1.875h2.773l-.443 2.89h-2.33v6.987C18.343 21.127 22 17 22 12"/>
+      </svg>
+    ),
+  },
+  {
+    href: "https://www.instagram.com/satyamsairealestate",
+    label: "Instagram",
+    icon: (
+      <svg className="w-6 h-6 text-pink-600" fill="currentColor" viewBox="0 0 24 24">
+        <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
       </svg>
     ),
   },
@@ -24,9 +35,9 @@ const socialLinks = [
     href: "mailto:satyamsairealestate@gmail.com",
     label: "Email",
     icon: (
-      <svg className="w-6 h-6 text-blue-400" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-        <rect x="3" y="5" width="18" height="14" rx="2" fill="#e0e7ff" />
-        <path d="M3 7l9 6 9-6" stroke="#2563eb" strokeWidth="2" strokeLinejoin="round" />
+      <svg className="w-6 h-6 text-amber-600" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+        <rect x="3" y="5" width="18" height="14" rx="2" fill="#fef3c7" />
+        <path d="M3 7l9 6 9-6" stroke="#d97706" strokeWidth="2" strokeLinejoin="round" />
       </svg>
     ),
   },
@@ -42,95 +53,282 @@ const socialLinks = [
 ];
 
 const Contact = () => {
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    phone: '',
+    subject: '',
+    message: ''
+  });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitStatus, setSubmitStatus] = useState(null); // 'success', 'error', or null
+
+  const handleInputChange = (e) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value
+    });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+    setSubmitStatus(null);
+
+    try {
+      console.log('Submitting form data:', formData);
+      
+      const { data, error } = await supabase
+        .from('form')
+        .insert([
+          {
+            name: formData.name,
+            email: formData.email,
+            phone: formData.phone,
+            subject: formData.subject,
+            message: formData.message
+          }
+        ]);
+
+      console.log('Supabase insert response:', { data, error });
+
+      if (error) {
+        throw error;
+      }
+
+      console.log('Form submitted successfully');
+      setSubmitStatus('success');
+      // Reset form
+      setFormData({
+        name: '',
+        email: '',
+        phone: '',
+        subject: '',
+        message: ''
+      });
+    } catch (error) {
+      console.error('Error submitting form:', error);
+      setSubmitStatus('error');
+    } finally {
+      setIsSubmitting(false);
+      // Clear status after 5 seconds
+      setTimeout(() => {
+        setSubmitStatus(null);
+      }, 5000);
+    }
+  };
+
   return (
-    <section className="min-h-screen w-full bg-gradient-to-br from-blue-100 via-white to-blue-200 flex flex-col mt-32 pb-16 px-0">
-      <div className="w-full flex flex-col items-center justify-start">
-                {/* Profile Photo */}
-        <div className="flex justify-center mt-8 mb-4">
-          <img
-            src="/sai.jpg"
-            alt="Profile"
-            className="w-62 h-62 rounded-full object-cover border-4 border-blue-300 shadow-lg"
-          />
-        </div>
-        <div className="w-full bg-white/95 rounded-none shadow-none p-0 border-0">
-          <h2 className="text-4xl md:text-5xl font-extrabold text-blue-800 mb-4 text-center tracking-tight">
-            Contact Us
-          </h2>
-          <p className="text-lg md:text-xl text-gray-700 mb-2 text-center">
-            Any questions, comments, suggestions or services related<br />
+    <div className="min-h-screen w-full bg-gradient-to-br from-amber-50 to-yellow-50 overflow-x-hidden">
+      {/* Hero Section */}
+      <div className="w-full bg-gradient-to-r from-amber-600 to-yellow-500 px-6 py-16 text-center">
+        <div className="max-w-6xl mx-auto">
+          <h1 className="text-5xl md:text-6xl font-bold text-white mb-8 drop-shadow-lg font-heading">Contact</h1>
+          <p className="text-xl text-yellow-200 drop-shadow font-inter">
+            Any questions, comments, suggestions or services related
+            <br />
             You tell us, We listen!
           </p>
-          <div className="flex flex-col md:flex-row items-center justify-center gap-8 mb-8">
-            <div className="bg-blue-50 rounded-2xl shadow p-6 w-full max-w-md">
-              <h3 className="text-2xl font-bold text-blue-700 mb-2">Contact Info</h3>
-              <p className="text-gray-700 mb-2">
-                <span className="font-semibold">Number:</span> <a href="tel:+917032836799" className="text-blue-600 hover:underline">+91 70328 36799</a>
-              </p>
-              <p className="text-gray-700 mb-2">
-                <span className="font-semibold">Address:</span><br />
-                No.1, H, No.14, P&amp;T, Colony-3, 56-10-37, Road, near, Panta Kaluva Rd,<br />
-                Patamata, Vijayawada, Andhra Pradesh 520010
-              </p>
-              <p className="text-gray-700">
-                <span className="font-semibold">Email:</span> <a href="mailto:satyamsaiairealestate@gmail.com" className="text-blue-600 hover:underline">satyamsairealestate@gmail.com</a>
-              </p>
-              <div className="flex gap-4 mt-4 justify-center">
-                {socialLinks.map(link => (
-                  <a
-                    key={link.label}
-                    href={link.href}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    aria-label={link.label}
-                    className="hover:scale-110 transition-transform"
-                  >
-                    {link.icon}
+        </div>
+      </div>
+
+      {/* Contact Information Cards */}
+      <div className="w-full bg-white px-6 py-16">
+        <div className="max-w-6xl mx-auto">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
+            {/* Phone Numbers */}
+            <div className="bg-gradient-to-br from-amber-100 to-yellow-100 rounded-2xl p-8 text-center shadow-lg hover:shadow-xl transition-shadow duration-300">
+              <Phone className="w-12 h-12 text-amber-600 mx-auto mb-4" />
+              <h3 className="text-2xl font-bold text-amber-700 mb-4 font-heading">Phone Numbers</h3>
+              <div className="space-y-2">
+                <p className="text-gray-700 font-inter">
+                  <a href="tel:+917032836799" className="text-amber-600 hover:text-amber-700 font-medium">
+                    070328 36799
                   </a>
-                ))}
+                </p>
+              </div>
+            </div>
+
+            {/* Email Addresses */}
+            <div className="bg-gradient-to-br from-amber-100 to-yellow-100 rounded-2xl p-8 text-center shadow-lg hover:shadow-xl transition-shadow duration-300">
+              <Mail className="w-12 h-12 text-amber-600 mx-auto mb-4" />
+              <h3 className="text-2xl font-bold text-amber-700 mb-4 font-heading">Email Addresses</h3>
+              <div className="space-y-2">
+                <p className="text-gray-700 font-inter">
+                  <a href="mailto:satyamsairealestate@gmail.com" className="text-amber-600 hover:text-amber-700 font-medium">
+                    satyamsairealestate@gmail.com
+                  </a>
+                </p>
+              </div>
+            </div>
+
+            {/* Office Address */}
+            <div className="bg-gradient-to-br from-amber-100 to-yellow-100 rounded-2xl p-8 text-center shadow-lg hover:shadow-xl transition-shadow duration-300">
+              <MapPin className="w-12 h-12 text-amber-600 mx-auto mb-4" />
+              <h3 className="text-2xl font-bold text-amber-700 mb-4 font-heading">Office Address</h3>
+              <div className="text-gray-700 leading-relaxed font-inter">
+                <p className="font-semibold text-amber-700 mb-2">Satyamsai Real Estate</p>
+                <p>No.1, H, No.14, P&T, Colony-3</p>
+                <p>56-10-37, Road, near, Panta Kaluva Rd</p>
+                <p>Patamata, Vijayawada</p>
+                <p>Andhra Pradesh 520010</p>
               </div>
             </div>
           </div>
-          {/* Mail icon before the Google Form */}
-          <div className="flex justify-center mb-6">
-            <svg className="w-20 h-20 text-blue-400" fill="none" stroke="currentColor" strokeWidth="1.5" viewBox="0 0 48 48">
-              <rect x="6" y="12" width="36" height="24" rx="4" fill="#e0e7ff" />
-              <path d="M6 16l18 13L42 16" stroke="#2563eb" strokeWidth="2" strokeLinejoin="round" />
-            </svg>
-          </div>
-          <div className="w-full flex justify-center mb-10">
-              <iframe
-              src="https://docs.google.com/forms/d/1BTpoyO8_tDlp8VPiNTZEltwKcERagUGrl6lkIN_v9Ug/viewform?pli=1&pli=1&edit_requested=true"
-              width="100%"
-              height="700"
-              frameBorder="0"
-              marginHeight="0"
-              marginWidth="0"
-              title="Contact Form"
-              className="rounded-xl border-2 border-blue-200 shadow w-full bg-white"
-              style={{ minWidth: "100vw", maxWidth: "100vw", display: "block", margin: "0", padding: "0" }}
-              >
-              Loading…
-              </iframe>
-          </div>
 
-          {/* Google Map Embed */}
-          <div className="w-full flex justify-center">
-            <iframe
-              title="Satyamsai Real Estate Location"
-              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3806.026216861471!2d80.5935817!3d16.4961363!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3a35fb8754410227%3A0x4bcbbfa3f0318a26!2sSatyamsai%20Real%20Estate!5e0!3m2!1sen!2sin!4v1721720000000!5m2!1sen!2sin"
-              width="100%"
-              height="350"
-              style={{ border: 0, borderRadius: "1rem", minWidth: "300px", maxWidth: "1000px" }}
-              allowFullScreen=""
-              loading="lazy"
-              referrerPolicy="no-referrer-when-downgrade"
-              className="shadow-lg mx-auto"
-            ></iframe>
+          {/* Social Media */}
+          <div className="text-center mb-12">
+            <h3 className="text-3xl font-bold text-amber-700 mb-6 font-heading">Follow Us</h3>
+            <div className="flex justify-center gap-6">
+              {socialLinks.map(link => (
+                <a
+                  key={link.label}
+                  href={link.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={link.label}
+                  className="bg-white p-4 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-110"
+                >
+                  {link.icon}
+                </a>
+              ))}
+            </div>
           </div>
         </div>
       </div>
-    </section>
+
+      {/* Contact Form */}
+      <div className="w-full bg-gradient-to-br from-amber-100 to-yellow-100 px-6 py-16">
+        <div className="max-w-4xl mx-auto">
+          <div className="bg-white rounded-2xl shadow-xl p-8">
+            <h2 className="text-4xl font-bold text-amber-700 text-center mb-8 flex items-center justify-center gap-3 font-heading">
+              <MessageSquare className="w-10 h-10 text-amber-600" />
+              Make An Enquiry
+            </h2>
+
+            {/* Status Messages */}
+            {submitStatus === 'success' && (
+              <div className="mb-6 p-4 bg-green-100 border border-green-400 rounded-lg flex items-center gap-2">
+                <CheckCircle className="w-5 h-5 text-green-600" />
+                <span className="text-green-700 font-medium font-inter">Thank you for your enquiry! We will get back to you soon.</span>
+              </div>
+            )}
+
+            {submitStatus === 'error' && (
+              <div className="mb-6 p-4 bg-red-100 border border-red-400 rounded-lg flex items-center gap-2">
+                <AlertCircle className="w-5 h-5 text-red-600" />
+                <span className="text-red-700 font-medium font-inter">Sorry, there was an error submitting your form. Please try again.</span>
+              </div>
+            )}
+            
+            <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="relative">
+                <User className="absolute left-3 top-1/2 transform -translate-y-1/2 text-amber-600 w-5 h-5" />
+                <input
+                  type="text"
+                  name="name"
+                  value={formData.name}
+                  onChange={handleInputChange}
+                  required
+                  placeholder="Name*"
+                  className="w-full pl-12 pr-4 py-3 border border-amber-300 rounded-lg focus:ring-2 focus:ring-yellow-400 focus:border-transparent bg-amber-50 text-amber-900 placeholder-amber-600"
+                />
+              </div>
+
+              <div className="relative">
+                <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 text-amber-600 w-5 h-5" />
+                <input
+                  type="email"
+                  name="email"
+                  value={formData.email}
+                  onChange={handleInputChange}
+                  required
+                  placeholder="Email*"
+                  className="w-full pl-12 pr-4 py-3 border border-amber-300 rounded-lg focus:ring-2 focus:ring-yellow-400 focus:border-transparent bg-amber-50 text-amber-900 placeholder-amber-600"
+                />
+              </div>
+
+              <div className="relative">
+                <Phone className="absolute left-3 top-1/2 transform -translate-y-1/2 text-amber-600 w-5 h-5" />
+                <input
+                  type="tel"
+                  name="phone"
+                  value={formData.phone}
+                  onChange={handleInputChange}
+                  placeholder="Phone"
+                  className="w-full pl-12 pr-4 py-3 border border-amber-300 rounded-lg focus:ring-2 focus:ring-yellow-400 focus:border-transparent bg-amber-50 text-amber-900 placeholder-amber-600"
+                />
+              </div>
+
+              <div className="relative">
+                <MessageSquare className="absolute left-3 top-1/2 transform -translate-y-1/2 text-amber-600 w-5 h-5" />
+                <input
+                  type="text"
+                  name="subject"
+                  value={formData.subject}
+                  onChange={handleInputChange}
+                  placeholder="Subject"
+                  className="w-full pl-12 pr-4 py-3 border border-amber-300 rounded-lg focus:ring-2 focus:ring-yellow-400 focus:border-transparent bg-amber-50 text-amber-900 placeholder-amber-600"
+                />
+              </div>
+
+              <div className="md:col-span-2 relative">
+                <textarea
+                  name="message"
+                  value={formData.message}
+                  onChange={handleInputChange}
+                  placeholder="Message"
+                  rows="5"
+                  className="w-full p-4 border border-amber-300 rounded-lg focus:ring-2 focus:ring-yellow-400 focus:border-transparent bg-amber-50 text-amber-900 placeholder-amber-600 resize-none"
+                ></textarea>
+              </div>
+
+              <div className="md:col-span-2 text-center">
+                <button
+                  type="submit"
+                  disabled={isSubmitting}
+                  className="bg-gradient-to-r from-amber-600 to-yellow-500 hover:from-amber-700 hover:to-yellow-600 text-white font-bold px-8 py-4 rounded-full text-lg transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105 flex items-center justify-center gap-2 mx-auto disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100 font-inter"
+                >
+                  {isSubmitting ? (
+                    <>
+                      <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white"></div>
+                      <span>Submitting...</span>
+                    </>
+                  ) : (
+                    <>
+                      <Send className="w-5 h-5" />
+                      <span>Send Message</span>
+                    </>
+                  )}
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+
+      {/* Google Map */}
+      <div className="w-full flex justify-center py-16 px-4 bg-white">
+        <div className="w-full max-w-6xl">
+          <h2 className="text-4xl font-bold text-amber-700 text-center mb-8 font-heading">Visit Our Location</h2>
+          <iframe
+            title="Satyamsai Real Estate Location"
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3806.026216861471!2d80.5935817!3d16.4961363!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3a35fb8754410227%3A0x4bcbbfa3f0318a26!2sSatyamsai%20Real%20Estate!5e0!3m2!1sen!2sin!4v1721720000000!5m2!1sen!2sin"
+            width="100%"
+            height="400"
+            style={{
+              border: 0,
+              borderRadius: "1rem",
+            }}
+            allowFullScreen=""
+            loading="lazy"
+            referrerPolicy="no-referrer-when-downgrade"
+            className="shadow-2xl border-4 border-amber-200"
+          ></iframe>
+        </div>
+      </div>
+    </div>
   );
 };
+
 export default Contact;
