@@ -118,19 +118,19 @@ export default function Footer() {
         <div className="mt-8 pt-6 border-t border-amber-600">
           <div className="flex justify-center space-x-6">
             <a 
-              href="tel:+918341482547" 
+              href="tel:+917032836799" 
               className="bg-amber-600 hover:bg-amber-500 text-white px-4 py-2 rounded-lg transition-colors duration-200 text-sm font-medium"
             >
               Call Now
             </a>
             <a 
-              href="mailto:harivilluventures@gmail.com" 
+              href="mailto:satyamsairealestate@gmail.com" 
               className="bg-yellow-600 hover:bg-yellow-500 text-white px-4 py-2 rounded-lg transition-colors duration-200 text-sm font-medium"
             >
               Email Us
             </a>
             <a 
-              href="https://wa.me/918341482547" 
+              href="https://wa.me/917032836799" 
               target="_blank" 
               rel="noopener noreferrer" 
               className="bg-green-600 hover:bg-green-500 text-white px-4 py-2 rounded-lg transition-colors duration-200 text-sm font-medium"
