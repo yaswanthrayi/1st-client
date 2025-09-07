@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useAuth } from '../contexts/AuthContext';
 import { supabase } from '../lib/supabase';
-import { Mail, Phone, User, Calendar, MessageSquare, Eye, Trash2, RefreshCw, Search, Filter, Download, Menu, X, Plus, Edit, Upload, Image, Save, FolderOpen, LogOut } from 'lucide-react';
+import { Mail, Phone, User, Calendar, MessageSquare, Eye, Trash2, RefreshCw, Search, Filter, Download, Menu, X, Plus, Edit, Upload, Image, Save, FolderOpen } from 'lucide-react';
 
 export default function AdminDashboard() {
   const [submissions, setSubmissions] = useState([]);
@@ -29,7 +28,6 @@ export default function AdminDashboard() {
   const [uploadingImages, setUploadingImages] = useState(false);
   
   const navigate = useNavigate();
-  const { logout } = useAuth();
 
   useEffect(() => {
     fetchSubmissions();
@@ -135,7 +133,6 @@ export default function AdminDashboard() {
   };
 
   const handleLogout = () => {
-    logout();
     navigate('/admin-login');
   };
 

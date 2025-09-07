@@ -14,7 +14,7 @@ const socialLinks = [
     ),
   },
   {
-    href: "https://www.instagram.com/satyamsairealestate",
+    href: "https://www.instagram.com/harivilluventures",
     label: "Instagram",
     icon: (
       <svg className="w-6 h-6 text-pink-600" fill="currentColor" viewBox="0 0 24 24">
@@ -32,7 +32,7 @@ const socialLinks = [
     ),
   },
   {
-    href: "mailto:satyamsairealestate@gmail.com",
+    href: "mailto:harivilluventures@gmail.com",
     label: "Email",
     icon: (
       <svg className="w-6 h-6 text-amber-600" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
@@ -42,7 +42,7 @@ const socialLinks = [
     ),
   },
   {
-    href: "https://wa.me/917032836799",
+    href: "https://wa.me/918341482547",
     label: "WhatsApp",
     icon: (
       <svg className="w-6 h-6 text-green-500" fill="currentColor" viewBox="0 0 24 24">
@@ -123,8 +123,8 @@ const Contact = () => {
       {/* Hero Section */}
       <div className="w-full bg-gradient-to-r from-amber-600 to-yellow-500 px-6 py-16 text-center">
         <div className="max-w-6xl mx-auto">
-          <h1 className="text-5xl md:text-6xl font-bold text-white mb-8 drop-shadow-lg font-heading">Contact</h1>
-          <p className="text-xl text-yellow-200 drop-shadow font-inter">
+          <h1 className="text-5xl md:text-6xl font-bold text-white mb-8 drop-shadow-lg">Contact</h1>
+          <p className="text-xl text-yellow-200 drop-shadow">
             Any questions, comments, suggestions or services related
             <br />
             You tell us, We listen!
@@ -139,11 +139,16 @@ const Contact = () => {
             {/* Phone Numbers */}
             <div className="bg-gradient-to-br from-amber-100 to-yellow-100 rounded-2xl p-8 text-center shadow-lg hover:shadow-xl transition-shadow duration-300">
               <Phone className="w-12 h-12 text-amber-600 mx-auto mb-4" />
-              <h3 className="text-2xl font-bold text-amber-700 mb-4 font-heading">Phone Numbers</h3>
+              <h3 className="text-2xl font-bold text-amber-700 mb-4">Phone Numbers</h3>
               <div className="space-y-2">
-                <p className="text-gray-700 font-inter">
+                <p className="text-gray-700">
+                  <a href="tel:+918341482547" className="text-amber-600 hover:text-amber-700 font-medium">
+                    +91 8341482547
+                  </a>
+                </p>
+                <p className="text-gray-700">
                   <a href="tel:+917032836799" className="text-amber-600 hover:text-amber-700 font-medium">
-                    070328 36799
+                    +91 7032836799
                   </a>
                 </p>
               </div>
@@ -152,9 +157,14 @@ const Contact = () => {
             {/* Email Addresses */}
             <div className="bg-gradient-to-br from-amber-100 to-yellow-100 rounded-2xl p-8 text-center shadow-lg hover:shadow-xl transition-shadow duration-300">
               <Mail className="w-12 h-12 text-amber-600 mx-auto mb-4" />
-              <h3 className="text-2xl font-bold text-amber-700 mb-4 font-heading">Email Addresses</h3>
+              <h3 className="text-2xl font-bold text-amber-700 mb-4">Email Addresses</h3>
               <div className="space-y-2">
-                <p className="text-gray-700 font-inter">
+                <p className="text-gray-700">
+                  <a href="mailto:harivilluventures@gmail.com" className="text-amber-600 hover:text-amber-700 font-medium">
+                    harivilluventures@gmail.com
+                  </a>
+                </p>
+                <p className="text-gray-700">
                   <a href="mailto:satyamsairealestate@gmail.com" className="text-amber-600 hover:text-amber-700 font-medium">
                     satyamsairealestate@gmail.com
                   </a>
@@ -165,20 +175,30 @@ const Contact = () => {
             {/* Office Address */}
             <div className="bg-gradient-to-br from-amber-100 to-yellow-100 rounded-2xl p-8 text-center shadow-lg hover:shadow-xl transition-shadow duration-300">
               <MapPin className="w-12 h-12 text-amber-600 mx-auto mb-4" />
-              <h3 className="text-2xl font-bold text-amber-700 mb-4 font-heading">Office Address</h3>
-              <div className="text-gray-700 leading-relaxed font-inter">
-                <p className="font-semibold text-amber-700 mb-2">Satyamsai Real Estate</p>
-                <p>No.1, H, No.14, P&T, Colony-3</p>
-                <p>56-10-37, Road, near, Panta Kaluva Rd</p>
-                <p>Patamata, Vijayawada</p>
-                <p>Andhra Pradesh 520010</p>
+              <h3 className="text-2xl font-bold text-amber-700 mb-4">Office Address</h3>
+              <div className="text-gray-700 leading-relaxed">
+                <p className="font-semibold text-amber-700 mb-2">Harivillu Square</p>
+                <p>Plot No 7A, Ward No: 9</p>
+                <p>D.No:59A-21/1-3A/1</p>
+                <p>Vijayanagar Colony</p>
+                <p>Vijayawada - 10, Andhra Pradesh</p>
               </div>
             </div>
           </div>
 
+          {/* Additional Address */}
+          <div className="bg-gradient-to-r from-amber-600 to-yellow-500 rounded-2xl p-8 text-white text-center mb-12">
+            <h3 className="text-2xl font-bold mb-4 drop-shadow">Additional Office Location</h3>
+            <p className="text-yellow-100 leading-relaxed drop-shadow">
+              No.1, H, No.14, P&T, Colony-3, 56-10-37, Road, near, Panta Kaluva Rd,
+              <br />
+              Patamata, Vijayawada, Andhra Pradesh 520010
+            </p>
+          </div>
+
           {/* Social Media */}
           <div className="text-center mb-12">
-            <h3 className="text-3xl font-bold text-amber-700 mb-6 font-heading">Follow Us</h3>
+            <h3 className="text-3xl font-bold text-amber-700 mb-6">Follow Us</h3>
             <div className="flex justify-center gap-6">
               {socialLinks.map(link => (
                 <a
@@ -201,7 +221,7 @@ const Contact = () => {
       <div className="w-full bg-gradient-to-br from-amber-100 to-yellow-100 px-6 py-16">
         <div className="max-w-4xl mx-auto">
           <div className="bg-white rounded-2xl shadow-xl p-8">
-            <h2 className="text-4xl font-bold text-amber-700 text-center mb-8 flex items-center justify-center gap-3 font-heading">
+            <h2 className="text-4xl font-bold text-amber-700 text-center mb-8 flex items-center justify-center gap-3">
               <MessageSquare className="w-10 h-10 text-amber-600" />
               Make An Enquiry
             </h2>
@@ -210,14 +230,14 @@ const Contact = () => {
             {submitStatus === 'success' && (
               <div className="mb-6 p-4 bg-green-100 border border-green-400 rounded-lg flex items-center gap-2">
                 <CheckCircle className="w-5 h-5 text-green-600" />
-                <span className="text-green-700 font-medium font-inter">Thank you for your enquiry! We will get back to you soon.</span>
+                <span className="text-green-700 font-medium">Thank you for your enquiry! We will get back to you soon.</span>
               </div>
             )}
 
             {submitStatus === 'error' && (
               <div className="mb-6 p-4 bg-red-100 border border-red-400 rounded-lg flex items-center gap-2">
                 <AlertCircle className="w-5 h-5 text-red-600" />
-                <span className="text-red-700 font-medium font-inter">Sorry, there was an error submitting your form. Please try again.</span>
+                <span className="text-red-700 font-medium">Sorry, there was an error submitting your form. Please try again.</span>
               </div>
             )}
             
@@ -287,7 +307,7 @@ const Contact = () => {
                 <button
                   type="submit"
                   disabled={isSubmitting}
-                  className="bg-gradient-to-r from-amber-600 to-yellow-500 hover:from-amber-700 hover:to-yellow-600 text-white font-bold px-8 py-4 rounded-full text-lg transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105 flex items-center justify-center gap-2 mx-auto disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100 font-inter"
+                  className="bg-gradient-to-r from-amber-600 to-yellow-500 hover:from-amber-700 hover:to-yellow-600 text-white font-bold px-8 py-4 rounded-full text-lg transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105 flex items-center justify-center gap-2 mx-auto disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
                 >
                   {isSubmitting ? (
                     <>
@@ -310,9 +330,9 @@ const Contact = () => {
       {/* Google Map */}
       <div className="w-full flex justify-center py-16 px-4 bg-white">
         <div className="w-full max-w-6xl">
-          <h2 className="text-4xl font-bold text-amber-700 text-center mb-8 font-heading">Visit Our Location</h2>
+          <h2 className="text-4xl font-bold text-amber-700 text-center mb-8">Visit Our Location</h2>
           <iframe
-            title="Satyamsai Real Estate Location"
+            title="Harivillu Ventures Location"
             src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3806.026216861471!2d80.5935817!3d16.4961363!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3a35fb8754410227%3A0x4bcbbfa3f0318a26!2sSatyamsai%20Real%20Estate!5e0!3m2!1sen!2sin!4v1721720000000!5m2!1sen!2sin"
             width="100%"
             height="400"

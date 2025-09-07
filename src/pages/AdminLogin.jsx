@@ -1,27 +1,21 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useAuth } from '../contexts/AuthContext';
 
 export default function AdminLogin() {
   const [phone, setPhone] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const navigate = useNavigate();
-  const { login, isAuthenticated } = useAuth();
-
-  // Redirect if already authenticated
-  useEffect(() => {
-    if (isAuthenticated) {
-      navigate('/admin-dashboard');
-    }
-  }, [isAuthenticated, navigate]);
 
   const handleLogin = (e) => {
     e.preventDefault();
 
-    const success = login(phone, password);
-    
-    if (success) {
+    // Hardcoded credentials
+    const adminPhone = '8341482547';
+    const adminPassword = 'admin123';
+
+    if (phone === adminPhone && password === adminPassword) {
+      // Redirect to admin dashboard
       navigate('/admin-dashboard');
     } else {
       setError('Invalid phone number or password');

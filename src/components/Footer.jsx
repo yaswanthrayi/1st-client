@@ -21,7 +21,7 @@ export default function Footer() {
         {/* Company Description */}
         <div className="mb-8 text-center">
           <p className="text-lg leading-relaxed max-w-4xl mx-auto text-yellow-100 font-inter">
-            Satyamsai Real Estate is a leading real estate firm dedicated to providing transparent, reliable, and professional real estate services in Vijayawada and surrounding areas.
+            With a proven track record within a short span, we are committed to providing approved and certified plots and homes in gated communities at affordable prices.
           </p>
         </div>
 
@@ -31,17 +31,16 @@ export default function Footer() {
           <div>
             <h3 className="text-xl font-bold mb-4 text-yellow-300 font-heading">Office Address</h3>
             <div className="space-y-2 text-yellow-100 font-inter">
-              <p>Satyamsai Real Estate</p>
-              <p>No.1, H, No.14, P&T, Colony-3</p>
-              <p>56-10-37, Road, near, Panta Kaluva Rd</p>
-              <p>Patamata, Vijayawada</p>
-              <p>Andhra Pradesh 520010</p>
-              <p className="mt-4 font-semibold text-yellow-300">070328 36799</p>
+              <p>Harivillu Square, Plot No 7A,</p>
+              <p>Ward No: 9, D.No:59A-21/1-3A/1,</p>
+              <p>Vijayanagar Colony,</p>
+              <p>Vijayawada - 10, Andhra Pradesh</p>
+              <p className="mt-4 font-semibold text-yellow-300">+91 8341482547</p>
               <a 
-                href="mailto:satyamsairealestate@gmail.com" 
+                href="mailto:harivilluventures@gmail.com" 
                 className="text-yellow-300 hover:text-yellow-200 transition-colors duration-200"
               >
-                satyamsairealestate@gmail.com
+                harivilluventures@gmail.com
               </a>
             </div>
           </div>
@@ -118,19 +117,19 @@ export default function Footer() {
         <div className="mt-8 pt-6 border-t border-amber-600">
           <div className="flex justify-center space-x-6">
             <a 
-              href="tel:+918341482547" 
+              href="tel:+917032836799" 
               className="bg-amber-600 hover:bg-amber-500 text-white px-4 py-2 rounded-lg transition-colors duration-200 text-sm font-medium"
             >
               Call Now
             </a>
             <a 
-              href="mailto:harivilluventures@gmail.com" 
+              href="mailto:satyamsairealestate@gmail.com" 
               className="bg-yellow-600 hover:bg-yellow-500 text-white px-4 py-2 rounded-lg transition-colors duration-200 text-sm font-medium"
             >
               Email Us
             </a>
             <a 
-              href="https://wa.me/918341482547" 
+              href="https://wa.me/917032836799" 
               target="_blank" 
               rel="noopener noreferrer" 
               className="bg-green-600 hover:bg-green-500 text-white px-4 py-2 rounded-lg transition-colors duration-200 text-sm font-medium"
