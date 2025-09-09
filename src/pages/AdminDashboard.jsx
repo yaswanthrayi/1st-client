@@ -16,7 +16,7 @@ export default function AdminDashboard() {
   const [filterPeriod, setFilterPeriod] = useState('all');
   const [showMobileMenu, setShowMobileMenu] = useState(false);
   const [viewMode, setViewMode] = useState('table');
-  const [activeTab, setActiveTab] = useState('submissions'); // 'submissions' or 'projects'
+  const [activeTab, setActiveTab] = useState('submissions'); // 'submissions', 'projects', or 'videos'
   
   // Project management states
   const [showProjectModal, setShowProjectModal] = useState(false);
@@ -28,12 +28,24 @@ export default function AdminDashboard() {
   });
   const [uploadingImages, setUploadingImages] = useState(false);
   
+  // Video management states
+  const [videos, setVideos] = useState([]);
+  const [videosLoading, setVideosLoading] = useState(false);
+  const [showVideoModal, setShowVideoModal] = useState(false);
+  const [editingVideo, setEditingVideo] = useState(null);
+  const [videoForm, setVideoForm] = useState({
+    url: '',
+    title: '',
+    description: ''
+  });
+  
   const navigate = useNavigate();
   const { logout } = useAuth();
 
   useEffect(() => {
     fetchSubmissions();
     fetchProjects();
+    fetchVideos();
   }, []);
 
   useEffect(() => {
@@ -332,6 +344,147 @@ export default function AdminDashboard() {
     }
   };
 
+  // Video Management Functions
+  const fetchVideos = async () => {
+    try {
+      setVideosLoading(true);
+      const { data, error } = await supabase
+        .from('videos')
+        .select('*')
+        .order('created_at', { ascending: false });
+
+      if (error) throw error;
+      setVideos(data || []);
+    } catch (error) {
+      console.error('Error fetching videos:', error);
+      alert('Error fetching videos');
+    } finally {
+      setVideosLoading(false);
+    }
+  };
+
+  const handleAddVideo = () => {
+    setEditingVideo(null);
+    setVideoForm({
+      url: '',
+      title: '',
+      description: ''
+    });
+    setShowVideoModal(true);
+  };
+
+  const handleEditVideo = (video) => {
+    setEditingVideo(video);
+    setVideoForm({
+      url: video.url || '',
+      title: video.title || '',
+      description: video.description || ''
+    });
+    setShowVideoModal(true);
+  };
+
+  // Helper function to convert YouTube watch URL to embed URL
+  const convertToEmbedUrl = (url) => {
+    if (!url) return url;
+    
+    // Check if it's already an embed URL
+    if (url.includes('youtube.com/embed/') || url.includes('youtu.be/embed/')) {
+      return url;
+    }
+    
+    // Extract video ID from different YouTube URL formats
+    let videoId = null;
+    
+    // Standard watch URL: https://www.youtube.com/watch?v=VIDEO_ID
+    const watchMatch = url.match(/(?:youtube\.com\/watch\?v=)([a-zA-Z0-9_-]+)/);
+    if (watchMatch) {
+      videoId = watchMatch[1];
+    }
+    
+    // Short URL: https://youtu.be/VIDEO_ID
+    const shortMatch = url.match(/(?:youtu\.be\/)([a-zA-Z0-9_-]+)/);
+    if (shortMatch) {
+      videoId = shortMatch[1];
+    }
+    
+    // Mobile URL: https://m.youtube.com/watch?v=VIDEO_ID
+    const mobileMatch = url.match(/(?:m\.youtube\.com\/watch\?v=)([a-zA-Z0-9_-]+)/);
+    if (mobileMatch) {
+      videoId = mobileMatch[1];
+    }
+    
+    // If we found a video ID, convert to embed URL
+    if (videoId) {
+      return `https://www.youtube.com/embed/${videoId}`;
+    }
+    
+    // Return original URL if no conversion possible
+    return url;
+  };
+
+  const handleSaveVideo = async () => {
+    if (!videoForm.url.trim() || !videoForm.title.trim()) {
+      alert('Please fill in URL and title');
+      return;
+    }
+
+    // Convert YouTube watch URL to embed URL
+    const embedUrl = convertToEmbedUrl(videoForm.url.trim());
+
+    try {
+      if (editingVideo) {
+        // Update existing video
+        const { error } = await supabase
+          .from('videos')
+          .update({
+            url: embedUrl,
+            title: videoForm.title.trim(),
+            description: videoForm.description.trim()
+          })
+          .eq('id', editingVideo.id);
+
+        if (error) throw error;
+        alert('Video updated successfully');
+      } else {
+        // Create new video
+        const { error } = await supabase
+          .from('videos')
+          .insert({
+            url: embedUrl,
+            title: videoForm.title.trim(),
+            description: videoForm.description.trim()
+          });
+
+        if (error) throw error;
+        alert('Video added successfully');
+      }
+
+      setShowVideoModal(false);
+      fetchVideos();
+    } catch (error) {
+      console.error('Error saving video:', error);
+      alert(`Error saving video: ${error.message || 'Unknown error'}`);
+    }
+  };
+
+  const handleDeleteVideo = async (id) => {
+    if (window.confirm('Are you sure you want to delete this video?')) {
+      try {
+        const { error } = await supabase
+          .from('videos')
+          .delete()
+          .eq('id', id);
+
+        if (error) throw error;
+        setVideos(videos.filter(video => video.id !== id));
+        alert('Video deleted successfully');
+      } catch (error) {
+        console.error('Error deleting video:', error);
+        alert('Error deleting video');
+      }
+    }
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-amber-50 via-yellow-50 to-orange-50">
       {/* Mobile Menu Overlay */}
@@ -372,6 +525,17 @@ export default function AdminDashboard() {
                   Manage Projects
                 </button>
                 <button
+                  onClick={() => { setActiveTab('videos'); setShowMobileMenu(false); }}
+                  className={`w-full px-4 py-3 rounded-xl flex items-center gap-3 transition-colors duration-200 ${
+                    activeTab === 'videos' 
+                      ? 'bg-amber-600 text-white' 
+                      : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                  }`}
+                >
+                  <Upload className="w-5 h-5" />
+                  Manage Videos
+                </button>
+                <button
                   onClick={handleLogout}
                   className="w-full bg-gray-600 hover:bg-gray-700 text-white px-4 py-3 rounded-xl flex items-center gap-3 transition-colors duration-200"
                 >
@@ -393,17 +557,18 @@ export default function AdminDashboard() {
                   Admin Dashboard
                 </h1>
                 <p className="text-gray-600 mt-2 text-sm lg:text-base">
-                  {activeTab === 'submissions' ? 'Manage contact form submissions' : 'Manage project portfolio'}
+                  {activeTab === 'submissions' ? 'Manage contact form submissions' : 
+                   activeTab === 'projects' ? 'Manage project portfolio' : 'Manage video gallery'}
                 </p>
               </div>
               
               {/* Desktop Actions */}
               <div className="hidden lg:flex gap-3">
                 <button
-                  onClick={activeTab === 'submissions' ? fetchSubmissions : fetchProjects}
+                  onClick={activeTab === 'submissions' ? fetchSubmissions : activeTab === 'projects' ? fetchProjects : fetchVideos}
                   className="bg-gradient-to-r from-amber-600 to-yellow-500 hover:from-amber-700 hover:to-yellow-600 text-white px-6 py-3 rounded-xl flex items-center gap-2 transition-all duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
                 >
-                  <RefreshCw className={`w-5 h-5 ${loading || projectsLoading ? 'animate-spin' : ''}`} />
+                  <RefreshCw className={`w-5 h-5 ${loading || projectsLoading || videosLoading ? 'animate-spin' : ''}`} />
                   Refresh
                 </button>
                 {activeTab === 'projects' && (
@@ -413,6 +578,15 @@ export default function AdminDashboard() {
                   >
                     <Plus className="w-5 h-5" />
                     Add Project
+                  </button>
+                )}
+                {activeTab === 'videos' && (
+                  <button
+                    onClick={handleAddVideo}
+                    className="bg-gradient-to-r from-green-600 to-green-500 hover:from-green-700 hover:to-green-600 text-white px-6 py-3 rounded-xl flex items-center gap-2 transition-all duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
+                  >
+                    <Plus className="w-5 h-5" />
+                    Add Video
                   </button>
                 )}
                 <button
@@ -457,6 +631,18 @@ export default function AdminDashboard() {
                 <FolderOpen className="w-5 h-5" />
                 <span className="hidden sm:inline">Manage Projects</span>
                 <span className="sm:hidden">Projects</span>
+              </button>
+              <button
+                onClick={() => setActiveTab('videos')}
+                className={`flex-1 py-3 px-4 rounded-xl flex items-center justify-center gap-2 transition-all duration-200 ${
+                  activeTab === 'videos'
+                    ? 'bg-white shadow-md text-amber-700 font-semibold'
+                    : 'text-gray-600 hover:text-gray-800'
+                }`}
+              >
+                <Upload className="w-5 h-5" />
+                <span className="hidden sm:inline">Manage Videos</span>
+                <span className="sm:hidden">Videos</span>
               </button>
             </div>
           </div>
@@ -581,7 +767,7 @@ export default function AdminDashboard() {
                 )}
               </div>
             </>
-          ) : (
+          ) : activeTab === 'projects' ? (
             <>
               {/* Projects Management */}
               <div className="bg-white/80 backdrop-blur-sm rounded-2xl lg:rounded-3xl shadow-xl border border-amber-100">
@@ -594,15 +780,14 @@ export default function AdminDashboard() {
                     onClick={handleAddProject}
                     className="bg-gradient-to-r from-green-600 to-green-500 hover:from-green-700 hover:to-green-600 text-white px-4 py-2 lg:px-6 lg:py-3 rounded-xl flex items-center gap-2 transition-all duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
                   >
-                    <Plus className="w-4 h-4 lg:w-5 lg:h-5" />
+                    <Plus className="w-5 h-5" />
                     <span className="hidden sm:inline">Add Project</span>
-                    <span className="sm:hidden">Add</span>
                   </button>
                 </div>
 
                 {projectsLoading ? (
-                  <div className="flex justify-center items-center p-12 lg:p-16">
-                    <RefreshCw className="w-8 h-8 lg:w-12 lg:h-12 animate-spin text-amber-600" />
+                  <div className="flex justify-center items-center py-12 lg:py-20">
+                    <RefreshCw className="animate-spin h-8 w-8 text-amber-600" />
                     <span className="ml-4 text-gray-600 text-lg">Loading projects...</span>
                   </div>
                 ) : projects.length === 0 ? (
@@ -681,7 +866,86 @@ export default function AdminDashboard() {
                 )}
               </div>
             </>
-          )}
+          ) : activeTab === 'videos' ? (
+            <>
+              {/* Videos Section */}
+              <div className="bg-white/80 backdrop-blur-sm rounded-3xl shadow-xl p-6 lg:p-8 border border-amber-100">
+                <div className="flex justify-between items-center mb-6">
+                  <h2 className="text-2xl font-bold text-gray-800">Video Gallery Management</h2>
+                  <span className="bg-amber-100 text-amber-800 px-3 py-1 rounded-full text-sm font-medium">
+                    {videos.length} video{videos.length !== 1 ? 's' : ''}
+                  </span>
+                </div>
+
+                {videosLoading ? (
+                  <div className="flex justify-center items-center py-20">
+                    <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-amber-600"></div>
+                  </div>
+                ) : (
+                  <div className="space-y-6">
+                    {videos.length === 0 ? (
+                      <div className="text-center py-20">
+                        <Upload className="w-16 h-16 text-gray-300 mx-auto mb-4" />
+                        <p className="text-gray-500 text-lg">No videos uploaded yet</p>
+                        <p className="text-gray-400 mt-2">Click "Add Video" to get started</p>
+                      </div>
+                    ) : (
+                      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        {videos.map((video) => (
+                          <div key={video.id} className="bg-gradient-to-br from-amber-50 to-yellow-50 rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 border border-amber-200">
+                            <div className="relative">
+                              {video.url && (
+                                <div className="relative pb-[56.25%] h-0">
+                                  <iframe
+                                    className="absolute top-0 left-0 w-full h-full rounded-t-2xl"
+                                    src={video.url}
+                                    title={video.title}
+                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                    allowFullScreen
+                                  ></iframe>
+                                </div>
+                              )}
+                            </div>
+                            
+                            <div className="p-5">
+                              <div className="flex justify-between items-start mb-3">
+                                <h3 className="font-semibold text-lg text-gray-900 line-clamp-2">{video.title}</h3>
+                                <div className="flex gap-2 ml-2">
+                                  <button
+                                    onClick={() => handleEditVideo(video)}
+                                    className="bg-blue-600 hover:bg-blue-700 text-white p-2 rounded-lg transition-colors duration-200"
+                                    title="Edit Video"
+                                  >
+                                    <Edit className="w-4 h-4" />
+                                  </button>
+                                  <button
+                                    onClick={() => handleDeleteVideo(video.id)}
+                                    className="bg-red-600 hover:bg-red-700 text-white p-2 rounded-lg transition-colors duration-200"
+                                    title="Delete Video"
+                                  >
+                                    <Trash2 className="w-4 h-4" />
+                                  </button>
+                                </div>
+                              </div>
+                              
+                              {video.description && (
+                                <p className="text-gray-600 text-sm line-clamp-3 mb-3">{video.description}</p>
+                              )}
+                              
+                              <div className="flex items-center justify-between text-sm text-gray-500">
+                                <span>{formatDate(video.created_at)}</span>
+                                <span className="text-amber-600 font-medium">Video</span>
+                              </div>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                )}
+              </div>
+            </>
+          ) : null}
         </div>
       </div>
 
@@ -888,6 +1152,123 @@ export default function AdminDashboard() {
                 >
                   <Save className="w-5 h-5" />
                   {editingProject ? 'Update Project' : 'Create Project'}
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Video Modal */}
+      {showVideoModal && (
+        <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 z-50">
+          <div className="bg-white rounded-3xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+            <div className="sticky top-0 bg-gradient-to-r from-amber-600 to-yellow-500 text-white p-6 rounded-t-3xl">
+              <div className="flex justify-between items-center">
+                <div>
+                  <h3 className="text-2xl lg:text-3xl font-bold">
+                    {editingVideo ? 'Edit Video' : 'Add New Video'}
+                  </h3>
+                  <p className="opacity-90 mt-1">
+                    {editingVideo ? 'Update video information' : 'Add a new video to your gallery'}
+                  </p>
+                </div>
+                <button
+                  onClick={() => setShowVideoModal(false)}
+                  className="text-white/80 hover:text-white bg-white/20 hover:bg-white/30 p-3 rounded-2xl transition-all duration-200 transform hover:scale-110"
+                >
+                  <X className="w-6 h-6" />
+                </button>
+              </div>
+            </div>
+
+            <div className="p-6 lg:p-8">
+              <div className="space-y-6">
+                {/* Video URL */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Video URL <span className="text-red-500">*</span>
+                  </label>
+                  <input
+                    type="url"
+                    value={videoForm.url}
+                    onChange={(e) => setVideoForm({...videoForm, url: e.target.value})}
+                    placeholder="https://www.youtube.com/watch?v=... or https://youtu.be/..."
+                    className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-amber-500 focus:border-transparent transition-all duration-200"
+                  />
+                  <p className="text-sm text-gray-500 mt-2">
+                    Paste any YouTube URL format - it will be automatically converted for embedding
+                  </p>
+                  {videoForm.url && convertToEmbedUrl(videoForm.url) !== videoForm.url && (
+                    <div className="mt-2 p-3 bg-green-50 border border-green-200 rounded-xl">
+                      <p className="text-sm text-green-700">
+                        <span className="font-medium">Will be converted to:</span> {convertToEmbedUrl(videoForm.url)}
+                      </p>
+                    </div>
+                  )}
+                </div>
+
+                {/* Video Title */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Video Title <span className="text-red-500">*</span>
+                  </label>
+                  <input
+                    type="text"
+                    value={videoForm.title}
+                    onChange={(e) => setVideoForm({...videoForm, title: e.target.value})}
+                    placeholder="Enter video title..."
+                    className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-amber-500 focus:border-transparent transition-all duration-200"
+                  />
+                </div>
+
+                {/* Video Description */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Video Description
+                  </label>
+                  <textarea
+                    value={videoForm.description}
+                    onChange={(e) => setVideoForm({...videoForm, description: e.target.value})}
+                    placeholder="Enter video description..."
+                    rows={4}
+                    className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-amber-500 focus:border-transparent transition-all duration-200"
+                  />
+                </div>
+
+                {/* Video Preview */}
+                {videoForm.url && (
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      Video Preview
+                    </label>
+                    <div className="relative pb-[56.25%] h-0 rounded-xl overflow-hidden border border-gray-300">
+                      <iframe
+                        className="absolute top-0 left-0 w-full h-full"
+                        src={convertToEmbedUrl(videoForm.url)}
+                        title="Video Preview"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                        allowFullScreen
+                      ></iframe>
+                    </div>
+                  </div>
+                )}
+              </div>
+
+              {/* Action Buttons */}
+              <div className="flex flex-col sm:flex-row gap-3 pt-6 border-t border-gray-200 mt-6">
+                <button
+                  onClick={() => setShowVideoModal(false)}
+                  className="flex-1 bg-gradient-to-r from-gray-600 to-gray-500 hover:from-gray-700 hover:to-gray-600 text-white py-3 px-6 rounded-2xl font-semibold transition-all duration-200 transform hover:-translate-y-0.5 shadow-lg hover:shadow-xl"
+                >
+                  Cancel
+                </button>
+                <button
+                  onClick={handleSaveVideo}
+                  className="flex-1 bg-gradient-to-r from-green-600 to-green-500 hover:from-green-700 hover:to-green-600 text-white py-3 px-6 rounded-2xl font-semibold transition-all duration-200 transform hover:-translate-y-0.5 shadow-lg hover:shadow-xl flex items-center justify-center gap-2"
+                >
+                  <Save className="w-5 h-5" />
+                  {editingVideo ? 'Update Video' : 'Add Video'}
                 </button>
               </div>
             </div>

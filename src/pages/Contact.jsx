@@ -1,6 +1,5 @@
-// Contact.jsx
 import React, { useState } from "react";
-import { Phone, Mail, MapPin, Send, User, MessageSquare, CheckCircle, AlertCircle } from "lucide-react";
+import { Phone, Mail, MapPin, Send, User, MessageSquare, CheckCircle, AlertCircle, Star, Building, Clock, Users } from "lucide-react";
 import { supabase } from '../lib/supabase';
 
 const socialLinks = [
@@ -35,10 +34,7 @@ const socialLinks = [
     href: "mailto:satyamsairealestate@gmail.com",
     label: "Email",
     icon: (
-      <svg className="w-6 h-6 text-amber-600" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-        <rect x="3" y="5" width="18" height="14" rx="2" fill="#fef3c7" />
-        <path d="M3 7l9 6 9-6" stroke="#d97706" strokeWidth="2" strokeLinejoin="round" />
-      </svg>
+      <Mail className="w-6 h-6 text-orange-600" />
     ),
   },
   {
@@ -61,7 +57,7 @@ const Contact = () => {
     message: ''
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [submitStatus, setSubmitStatus] = useState(null); // 'success', 'error', or null
+  const [submitStatus, setSubmitStatus] = useState(null);
 
   const handleInputChange = (e) => {
     setFormData({
@@ -98,7 +94,6 @@ const Contact = () => {
 
       console.log('Form submitted successfully');
       setSubmitStatus('success');
-      // Reset form
       setFormData({
         name: '',
         email: '',
@@ -111,7 +106,6 @@ const Contact = () => {
       setSubmitStatus('error');
     } finally {
       setIsSubmitting(false);
-      // Clear status after 5 seconds
       setTimeout(() => {
         setSubmitStatus(null);
       }, 5000);
@@ -119,184 +113,321 @@ const Contact = () => {
   };
 
   return (
-    <div className="min-h-screen w-full bg-gradient-to-br from-amber-50 to-yellow-50 overflow-x-hidden">
+    <div className="min-h-screen w-full bg-slate-50 overflow-x-hidden">
       {/* Hero Section */}
-      <div className="w-full bg-gradient-to-r from-amber-600 to-yellow-500 px-6 py-16 text-center">
-        <div className="max-w-6xl mx-auto">
-          <h1 className="text-5xl md:text-6xl font-bold text-white mb-8 drop-shadow-lg font-heading">Contact</h1>
-          <p className="text-xl text-yellow-200 drop-shadow font-inter">
-            Any questions, comments, suggestions or services related
-            <br />
-            You tell us, We listen!
+      <div className="w-full bg-gradient-to-br from-orange-800 via-orange-700 to-amber-800 px-4 sm:px-6 py-16 sm:py-20 text-center relative overflow-hidden">
+        {/* Background decoration */}
+        <div className="absolute inset-0 bg-black/20"></div>
+        <div className="absolute inset-0 bg-gradient-to-t from-black/10 to-transparent"></div>
+        <div className="absolute inset-0 opacity-10">
+          <div className="w-full h-full bg-white/10 bg-[radial-gradient(circle_at_25%_25%,rgba(255,255,255,0.1)_2px,transparent_2px)] bg-[length:60px_60px]"></div>
+        </div>
+        
+        <div className="max-w-7xl mx-auto relative z-10">
+          <div className="flex flex-col sm:flex-row items-center justify-center mb-8 gap-4">
+            <div className="bg-white/20 backdrop-blur-sm rounded-full p-4 shadow-xl">
+              <MessageSquare className="w-12 h-12 sm:w-16 sm:h-16 text-white" />
+            </div>
+            <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold text-white tracking-tight drop-shadow-2xl">
+              Contact Us
+            </h1>
+          </div>
+          <p className="text-lg sm:text-xl md:text-2xl text-orange-100 max-w-4xl mx-auto leading-relaxed mb-8 drop-shadow-lg">
+            Any questions, comments, suggestions or services related - You tell us, We listen!
           </p>
+          <div className="flex items-center justify-center gap-2 text-orange-200">
+            <Star className="w-5 h-5 fill-current" />
+            <span className="text-lg font-medium">Your Premier Real Estate Partner</span>
+            <Star className="w-5 h-5 fill-current" />
+          </div>
+        </div>
+      </div>
+
+      {/* Stats Section */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 -mt-10 mb-16 relative z-20">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
+          {[
+            { label: 'Happy Clients', value: '500+', icon: Users },
+            { label: 'Years Experience', value: '10+', icon: Clock },
+            { label: 'Projects Completed', value: '15+', icon: Building },
+            { label: 'Support 24/7', value: '365', icon: Phone }
+          ].map((stat, index) => (
+            <div key={index} className="bg-white/95 backdrop-blur-sm rounded-2xl p-4 sm:p-6 text-center shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 border border-orange-100">
+              <div className="bg-orange-500 w-12 h-12 sm:w-16 sm:h-16 rounded-full flex items-center justify-center mx-auto mb-3 shadow-lg">
+                <stat.icon className="w-6 h-6 sm:w-8 sm:h-8 text-white" />
+              </div>
+              <div className="text-2xl sm:text-3xl font-bold text-orange-800 mb-1">{stat.value}</div>
+              <div className="text-sm sm:text-base text-gray-600 font-medium">{stat.label}</div>
+            </div>
+          ))}
         </div>
       </div>
 
       {/* Contact Information Cards */}
-      <div className="w-full bg-white px-6 py-16">
-        <div className="max-w-6xl mx-auto">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
-            {/* Phone Numbers */}
-            <div className="bg-gradient-to-br from-amber-100 to-yellow-100 rounded-2xl p-8 text-center shadow-lg hover:shadow-xl transition-shadow duration-300">
-              <Phone className="w-12 h-12 text-amber-600 mx-auto mb-4" />
-              <h3 className="text-2xl font-bold text-amber-700 mb-4 font-heading">Phone Numbers</h3>
-              <div className="space-y-2">
-                <p className="text-gray-700 font-inter">
-                  <a href="tel:+917032836799" className="text-amber-600 hover:text-amber-700 font-medium">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 mb-16 sm:mb-20">
+        <div className="text-center mb-12 sm:mb-16">
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-orange-800 mb-6 tracking-tight">
+            Get In Touch
+          </h2>
+          <p className="text-lg sm:text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
+            Reach out to us through any of these channels. We're here to assist you with all your real estate needs.
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8">
+          {/* Phone Numbers */}
+          <div className="group">
+            <div className="bg-white rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-500 overflow-hidden border border-orange-100 transform hover:-translate-y-2">
+              <div className="bg-gradient-to-br from-orange-600 to-orange-700 p-6 text-center">
+                <div className="bg-white/20 backdrop-blur-sm rounded-full p-4 w-fit mx-auto mb-4 shadow-lg">
+                  <Phone className="w-8 h-8 text-white" />
+                </div>
+                <h3 className="text-xl sm:text-2xl font-bold text-white mb-2">Phone Numbers</h3>
+                <p className="text-orange-100 text-sm sm:text-base">Call us anytime</p>
+              </div>
+              <div className="p-6">
+                <div className="space-y-3">
+                  <a 
+                    href="tel:+917032836799" 
+                    className="flex items-center justify-center gap-3 text-orange-600 hover:text-orange-700 font-semibold text-lg transition-colors duration-200 bg-orange-50 hover:bg-orange-100 rounded-xl py-3 px-4"
+                  >
+                    <Phone className="w-5 h-5" />
                     070328 36799
                   </a>
-                </p>
-              </div>
-            </div>
-
-            {/* Email Addresses */}
-            <div className="bg-gradient-to-br from-amber-100 to-yellow-100 rounded-2xl p-8 text-center shadow-lg hover:shadow-xl transition-shadow duration-300">
-              <Mail className="w-12 h-12 text-amber-600 mx-auto mb-4" />
-              <h3 className="text-2xl font-bold text-amber-700 mb-4 font-heading">Email Addresses</h3>
-              <div className="space-y-2">
-                <p className="text-gray-700 font-inter">
-                  <a href="mailto:satyamsairealestate@gmail.com" className="text-amber-600 hover:text-amber-700 font-medium">
-                    satyamsairealestate@gmail.com
-                  </a>
-                </p>
-              </div>
-            </div>
-
-            {/* Office Address */}
-            <div className="bg-gradient-to-br from-amber-100 to-yellow-100 rounded-2xl p-8 text-center shadow-lg hover:shadow-xl transition-shadow duration-300">
-              <MapPin className="w-12 h-12 text-amber-600 mx-auto mb-4" />
-              <h3 className="text-2xl font-bold text-amber-700 mb-4 font-heading">Office Address</h3>
-              <div className="text-gray-700 leading-relaxed font-inter">
-                <p className="font-semibold text-amber-700 mb-2">Satyamsai Real Estate</p>
-                <p>No.1, H, No.14, P&T, Colony-3</p>
-                <p>56-10-37, Road, near, Panta Kaluva Rd</p>
-                <p>Patamata, Vijayawada</p>
-                <p>Andhra Pradesh 520010</p>
+                </div>
               </div>
             </div>
           </div>
 
-          {/* Social Media */}
-          <div className="text-center mb-12">
-            <h3 className="text-3xl font-bold text-amber-700 mb-6 font-heading">Follow Us</h3>
-            <div className="flex justify-center gap-6">
-              {socialLinks.map(link => (
-                <a
-                  key={link.label}
-                  href={link.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label={link.label}
-                  className="bg-white p-4 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-110"
-                >
-                  {link.icon}
-                </a>
-              ))}
+          {/* Email Addresses */}
+          <div className="group">
+            <div className="bg-white rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-500 overflow-hidden border border-orange-100 transform hover:-translate-y-2">
+              <div className="bg-gradient-to-br from-orange-600 to-orange-700 p-6 text-center">
+                <div className="bg-white/20 backdrop-blur-sm rounded-full p-4 w-fit mx-auto mb-4 shadow-lg">
+                  <Mail className="w-8 h-8 text-white" />
+                </div>
+                <h3 className="text-xl sm:text-2xl font-bold text-white mb-2">Email Address</h3>
+                <p className="text-orange-100 text-sm sm:text-base">Send us a message</p>
+              </div>
+              <div className="p-6">
+                <div className="space-y-3">
+                  <a 
+                    href="mailto:satyamsairealestate@gmail.com" 
+                    className="flex items-center justify-center gap-3 text-orange-600 hover:text-orange-700 font-semibold transition-colors duration-200 bg-orange-50 hover:bg-orange-100 rounded-xl py-3 px-4 text-center break-all"
+                  >
+                    <Mail className="w-5 h-5 flex-shrink-0" />
+                    <span className="text-sm sm:text-base">satyamsairealestate@gmail.com</span>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Office Address */}
+          <div className="group md:col-span-1">
+            <div className="bg-white rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-500 overflow-hidden border border-orange-100 transform hover:-translate-y-2">
+              <div className="bg-gradient-to-br from-orange-600 to-orange-700 p-6 text-center">
+                <div className="bg-white/20 backdrop-blur-sm rounded-full p-4 w-fit mx-auto mb-4 shadow-lg">
+                  <MapPin className="w-8 h-8 text-white" />
+                </div>
+                <h3 className="text-xl sm:text-2xl font-bold text-white mb-2">Office Address</h3>
+                <p className="text-orange-100 text-sm sm:text-base">Visit us today</p>
+              </div>
+              <div className="p-6">
+                <div className="text-gray-700 leading-relaxed text-center space-y-2">
+                  <p className="font-semibold text-orange-700 text-lg">Satyamsai Real Estate</p>
+                  <div className="text-sm sm:text-base space-y-1">
+                    <p>No.1, H, No.14, P&T, Colony-3</p>
+                    <p>56-10-37, Road, near, Panta Kaluva Rd</p>
+                    <p>Patamata, Vijayawada</p>
+                    <p className="font-medium text-orange-700">Andhra Pradesh 520010</p>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
       </div>
 
-      {/* Contact Form */}
-      <div className="w-full bg-gradient-to-br from-amber-100 to-yellow-100 px-6 py-16">
-        <div className="max-w-4xl mx-auto">
-          <div className="bg-white rounded-2xl shadow-xl p-8">
-            <h2 className="text-4xl font-bold text-amber-700 text-center mb-8 flex items-center justify-center gap-3 font-heading">
-              <MessageSquare className="w-10 h-10 text-amber-600" />
-              Make An Enquiry
-            </h2>
+      {/* Social Media Section */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 mb-16 sm:mb-20">
+        <div className="text-center mb-8 sm:mb-12">
+          <h3 className="text-2xl sm:text-3xl font-bold text-orange-800 mb-4">Follow Us</h3>
+          <p className="text-gray-600 text-base sm:text-lg">Stay connected with us on social media for updates and property listings</p>
+        </div>
+        <div className="flex flex-wrap justify-center gap-4 sm:gap-6">
+          {socialLinks.map(link => (
+            <a
+              key={link.label}
+              href={link.href}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label={link.label}
+              className="bg-white p-4 sm:p-5 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-110 border border-orange-100 group"
+            >
+              <div className="group-hover:scale-110 transition-transform duration-200">
+                {link.icon}
+              </div>
+            </a>
+          ))}
+        </div>
+      </div>
 
+      {/* Contact Form */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 mb-16 sm:mb-20">
+        <div className="bg-white rounded-3xl shadow-2xl overflow-hidden border border-orange-100">
+          {/* Form Header */}
+          <div className="bg-gradient-to-br from-orange-800 via-orange-700 to-amber-800 px-6 sm:px-8 py-8 sm:py-12 text-center relative overflow-hidden">
+            <div className="absolute inset-0 bg-black/20"></div>
+            <div className="absolute inset-0 opacity-10">
+              <div className="w-full h-full bg-white/20 bg-[radial-gradient(circle_at_75%_25%,rgba(255,255,255,0.3)_2px,transparent_2px)] bg-[length:40px_40px]"></div>
+            </div>
+            <div className="relative z-10">
+              <div className="bg-white/20 backdrop-blur-sm rounded-full p-4 w-fit mx-auto mb-6 shadow-xl">
+                <MessageSquare className="w-8 h-8 sm:w-10 sm:h-10 text-white" />
+              </div>
+              <h2 className="text-3xl sm:text-4xl font-bold text-white mb-4 drop-shadow-lg">
+                Make An Enquiry
+              </h2>
+              <p className="text-lg sm:text-xl text-orange-100 max-w-3xl mx-auto leading-relaxed drop-shadow">
+                Ready to find your dream property? Fill out the form below and we'll get back to you within 24 hours.
+              </p>
+            </div>
+          </div>
+
+          {/* Form Content */}
+          <div className="p-6 sm:p-8 lg:p-12">
             {/* Status Messages */}
             {submitStatus === 'success' && (
-              <div className="mb-6 p-4 bg-green-100 border border-green-400 rounded-lg flex items-center gap-2">
-                <CheckCircle className="w-5 h-5 text-green-600" />
-                <span className="text-green-700 font-medium font-inter">Thank you for your enquiry! We will get back to you soon.</span>
+              <div className="mb-6 sm:mb-8 p-4 sm:p-6 bg-green-50 border-2 border-green-200 rounded-2xl flex items-center gap-3 shadow-lg">
+                <div className="bg-green-500 rounded-full p-2">
+                  <CheckCircle className="w-6 h-6 text-white" />
+                </div>
+                <div>
+                  <h4 className="font-semibold text-green-800 text-lg">Thank you for your enquiry!</h4>
+                  <p className="text-green-700">We will get back to you within 24 hours.</p>
+                </div>
               </div>
             )}
 
             {submitStatus === 'error' && (
-              <div className="mb-6 p-4 bg-red-100 border border-red-400 rounded-lg flex items-center gap-2">
-                <AlertCircle className="w-5 h-5 text-red-600" />
-                <span className="text-red-700 font-medium font-inter">Sorry, there was an error submitting your form. Please try again.</span>
+              <div className="mb-6 sm:mb-8 p-4 sm:p-6 bg-red-50 border-2 border-red-200 rounded-2xl flex items-center gap-3 shadow-lg">
+                <div className="bg-red-500 rounded-full p-2">
+                  <AlertCircle className="w-6 h-6 text-white" />
+                </div>
+                <div>
+                  <h4 className="font-semibold text-red-800 text-lg">Oops! Something went wrong</h4>
+                  <p className="text-red-700">Please try submitting the form again.</p>
+                </div>
               </div>
             )}
             
-            <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div className="relative">
-                <User className="absolute left-3 top-1/2 transform -translate-y-1/2 text-amber-600 w-5 h-5" />
-                <input
-                  type="text"
-                  name="name"
-                  value={formData.name}
-                  onChange={handleInputChange}
-                  required
-                  placeholder="Name*"
-                  className="w-full pl-12 pr-4 py-3 border border-amber-300 rounded-lg focus:ring-2 focus:ring-yellow-400 focus:border-transparent bg-amber-50 text-amber-900 placeholder-amber-600"
-                />
+            <form onSubmit={handleSubmit} className="space-y-6 sm:space-y-8">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="relative group">
+                  <label htmlFor="name" className="block text-sm font-semibold text-orange-800 mb-2">
+                    Full Name *
+                  </label>
+                  <div className="relative">
+                    <User className="absolute left-4 top-1/2 transform -translate-y-1/2 text-orange-500 w-5 h-5 group-focus-within:text-orange-600 transition-colors" />
+                    <input
+                      type="text"
+                      id="name"
+                      name="name"
+                      value={formData.name}
+                      onChange={handleInputChange}
+                      required
+                      placeholder="Enter your full name"
+                      className="w-full pl-12 pr-4 py-4 border-2 border-orange-200 rounded-2xl focus:ring-2 focus:ring-orange-500 focus:border-orange-500 bg-orange-50/50 text-gray-900 placeholder-orange-400 transition-all duration-300 hover:border-orange-300"
+                    />
+                  </div>
+                </div>
+
+                <div className="relative group">
+                  <label htmlFor="email" className="block text-sm font-semibold text-orange-800 mb-2">
+                    Email Address *
+                  </label>
+                  <div className="relative">
+                    <Mail className="absolute left-4 top-1/2 transform -translate-y-1/2 text-orange-500 w-5 h-5 group-focus-within:text-orange-600 transition-colors" />
+                    <input
+                      type="email"
+                      id="email"
+                      name="email"
+                      value={formData.email}
+                      onChange={handleInputChange}
+                      required
+                      placeholder="Enter your email address"
+                      className="w-full pl-12 pr-4 py-4 border-2 border-orange-200 rounded-2xl focus:ring-2 focus:ring-orange-500 focus:border-orange-500 bg-orange-50/50 text-gray-900 placeholder-orange-400 transition-all duration-300 hover:border-orange-300"
+                    />
+                  </div>
+                </div>
+
+                <div className="relative group">
+                  <label htmlFor="phone" className="block text-sm font-semibold text-orange-800 mb-2">
+                    Phone Number
+                  </label>
+                  <div className="relative">
+                    <Phone className="absolute left-4 top-1/2 transform -translate-y-1/2 text-orange-500 w-5 h-5 group-focus-within:text-orange-600 transition-colors" />
+                    <input
+                      type="tel"
+                      id="phone"
+                      name="phone"
+                      value={formData.phone}
+                      onChange={handleInputChange}
+                      placeholder="Enter your phone number"
+                      className="w-full pl-12 pr-4 py-4 border-2 border-orange-200 rounded-2xl focus:ring-2 focus:ring-orange-500 focus:border-orange-500 bg-orange-50/50 text-gray-900 placeholder-orange-400 transition-all duration-300 hover:border-orange-300"
+                    />
+                  </div>
+                </div>
+
+                <div className="relative group">
+                  <label htmlFor="subject" className="block text-sm font-semibold text-orange-800 mb-2">
+                    Subject
+                  </label>
+                  <div className="relative">
+                    <Star className="absolute left-4 top-1/2 transform -translate-y-1/2 text-orange-500 w-5 h-5 group-focus-within:text-orange-600 transition-colors" />
+                    <input
+                      type="text"
+                      id="subject"
+                      name="subject"
+                      value={formData.subject}
+                      onChange={handleInputChange}
+                      placeholder="What can we help you with?"
+                      className="w-full pl-12 pr-4 py-4 border-2 border-orange-200 rounded-2xl focus:ring-2 focus:ring-orange-500 focus:border-orange-500 bg-orange-50/50 text-gray-900 placeholder-orange-400 transition-all duration-300 hover:border-orange-300"
+                    />
+                  </div>
+                </div>
               </div>
 
-              <div className="relative">
-                <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 text-amber-600 w-5 h-5" />
-                <input
-                  type="email"
-                  name="email"
-                  value={formData.email}
-                  onChange={handleInputChange}
-                  required
-                  placeholder="Email*"
-                  className="w-full pl-12 pr-4 py-3 border border-amber-300 rounded-lg focus:ring-2 focus:ring-yellow-400 focus:border-transparent bg-amber-50 text-amber-900 placeholder-amber-600"
-                />
-              </div>
-
-              <div className="relative">
-                <Phone className="absolute left-3 top-1/2 transform -translate-y-1/2 text-amber-600 w-5 h-5" />
-                <input
-                  type="tel"
-                  name="phone"
-                  value={formData.phone}
-                  onChange={handleInputChange}
-                  placeholder="Phone"
-                  className="w-full pl-12 pr-4 py-3 border border-amber-300 rounded-lg focus:ring-2 focus:ring-yellow-400 focus:border-transparent bg-amber-50 text-amber-900 placeholder-amber-600"
-                />
-              </div>
-
-              <div className="relative">
-                <MessageSquare className="absolute left-3 top-1/2 transform -translate-y-1/2 text-amber-600 w-5 h-5" />
-                <input
-                  type="text"
-                  name="subject"
-                  value={formData.subject}
-                  onChange={handleInputChange}
-                  placeholder="Subject"
-                  className="w-full pl-12 pr-4 py-3 border border-amber-300 rounded-lg focus:ring-2 focus:ring-yellow-400 focus:border-transparent bg-amber-50 text-amber-900 placeholder-amber-600"
-                />
-              </div>
-
-              <div className="md:col-span-2 relative">
+              <div className="relative group">
+                <label htmlFor="message" className="block text-sm font-semibold text-orange-800 mb-2">
+                  Message
+                </label>
                 <textarea
+                  id="message"
                   name="message"
                   value={formData.message}
                   onChange={handleInputChange}
-                  placeholder="Message"
-                  rows="5"
-                  className="w-full p-4 border border-amber-300 rounded-lg focus:ring-2 focus:ring-yellow-400 focus:border-transparent bg-amber-50 text-amber-900 placeholder-amber-600 resize-none"
+                  placeholder="Tell us more about your requirements..."
+                  rows="6"
+                  className="w-full p-4 border-2 border-orange-200 rounded-2xl focus:ring-2 focus:ring-orange-500 focus:border-orange-500 bg-orange-50/50 text-gray-900 placeholder-orange-400 resize-none transition-all duration-300 hover:border-orange-300"
                 ></textarea>
               </div>
 
-              <div className="md:col-span-2 text-center">
+              <div className="text-center pt-4">
                 <button
                   type="submit"
                   disabled={isSubmitting}
-                  className="bg-gradient-to-r from-amber-600 to-yellow-500 hover:from-amber-700 hover:to-yellow-600 text-white font-bold px-8 py-4 rounded-full text-lg transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105 flex items-center justify-center gap-2 mx-auto disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100 font-inter"
+                  className="bg-gradient-to-r from-orange-600 to-orange-700 hover:from-orange-700 hover:to-orange-800 text-white font-bold px-8 sm:px-12 py-4 sm:py-5 rounded-2xl text-lg sm:text-xl transition-all duration-300 shadow-xl hover:shadow-2xl transform hover:scale-105 flex items-center justify-center gap-3 mx-auto disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100 min-w-[200px]"
                 >
                   {isSubmitting ? (
                     <>
-                      <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white"></div>
+                      <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-white"></div>
                       <span>Submitting...</span>
                     </>
                   ) : (
                     <>
-                      <Send className="w-5 h-5" />
+                      <Send className="w-6 h-6" />
                       <span>Send Message</span>
                     </>
                   )}
@@ -308,9 +439,15 @@ const Contact = () => {
       </div>
 
       {/* Google Map */}
-      <div className="w-full flex justify-center py-16 px-4 bg-white">
-        <div className="w-full max-w-6xl">
-          <h2 className="text-4xl font-bold text-amber-700 text-center mb-8 font-heading">Visit Our Location</h2>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 mb-16 sm:mb-20">
+        <div className="text-center mb-8 sm:mb-12">
+          <h2 className="text-3xl sm:text-4xl font-bold text-orange-800 mb-4">Visit Our Location</h2>
+          <p className="text-lg sm:text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
+            Come visit our office for a personal consultation and explore investment opportunities in person.
+          </p>
+        </div>
+        
+        <div className="bg-white rounded-3xl shadow-2xl overflow-hidden border border-orange-100 p-2">
           <iframe
             title="Satyamsai Real Estate Location"
             src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3806.026216861471!2d80.5935817!3d16.4961363!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3a35fb8754410227%3A0x4bcbbfa3f0318a26!2sSatyamsai%20Real%20Estate!5e0!3m2!1sen!2sin!4v1721720000000!5m2!1sen!2sin"
@@ -318,12 +455,12 @@ const Contact = () => {
             height="400"
             style={{
               border: 0,
-              borderRadius: "1rem",
+              borderRadius: "1.5rem",
             }}
             allowFullScreen=""
             loading="lazy"
             referrerPolicy="no-referrer-when-downgrade"
-            className="shadow-2xl border-4 border-amber-200"
+            className="shadow-lg"
           ></iframe>
         </div>
       </div>
