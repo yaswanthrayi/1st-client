@@ -42,6 +42,53 @@ export default function AdminDashboard() {
   const navigate = useNavigate();
   const { logout } = useAuth();
 
+  // YouTube URL conversion utility
+  const convertToEmbedUrl = (url) => {
+    if (!url) return '';
+    
+    // If it's already an embed URL, return as is
+    if (url.includes('youtube.com/embed/')) {
+      return url;
+    }
+    
+    let videoId = '';
+    
+    // Extract video ID from various YouTube URL formats
+    if (url.includes('youtu.be/')) {
+      // https://youtu.be/VIDEO_ID
+      videoId = url.split('youtu.be/')[1]?.split('?')[0]?.split('&')[0];
+    } else if (url.includes('youtube.com/watch?v=')) {
+      // https://www.youtube.com/watch?v=VIDEO_ID
+      videoId = url.split('v=')[1]?.split('&')[0];
+    } else if (url.includes('youtube.com/v/')) {
+      // https://www.youtube.com/v/VIDEO_ID
+      videoId = url.split('v/')[1]?.split('?')[0]?.split('&')[0];
+    }
+    
+    // If we found a video ID, convert to embed URL
+    if (videoId) {
+      return `https://www.youtube.com/embed/${videoId}`;
+    }
+    
+    // If it's not a recognized YouTube URL, return original URL
+    return url;
+  };
+
+  const getVideoThumbnail = (embedUrl) => {
+    const videoId = embedUrl.split('/embed/')[1]?.split('?')[0];
+    if (videoId) {
+      return `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`;
+    }
+    return null;
+  };
+
+  const isValidYouTubeUrl = (url) => {
+    if (!url) return false;
+    
+    const youtubeRegex = /^(https?:\/\/)?(www\.)?(youtube\.com\/(watch\?v=|embed\/|v\/)|youtu\.be\/)([a-zA-Z0-9_-]{11})/;
+    return youtubeRegex.test(url);
+  };
+
   useEffect(() => {
     fetchSubmissions();
     fetchProjects();
@@ -383,11 +430,25 @@ export default function AdminDashboard() {
     setShowVideoModal(true);
   };
 
+  const handleVideoUrlChange = (e) => {
+    const inputUrl = e.target.value;
+    setVideoForm(prev => ({ ...prev, url: inputUrl }));
+  };
+
   const handleSaveVideo = async () => {
     if (!videoForm.url.trim() || !videoForm.title.trim()) {
       alert('Please fill in URL and title');
       return;
     }
+
+    // Validate YouTube URL
+    if (!isValidYouTubeUrl(videoForm.url.trim())) {
+      alert('Please enter a valid YouTube URL');
+      return;
+    }
+
+    // Convert URL to embed format
+    const embedUrl = convertToEmbedUrl(videoForm.url.trim());
 
     try {
       if (editingVideo) {
@@ -395,7 +456,7 @@ export default function AdminDashboard() {
         const { error } = await supabase
           .from('videos')
           .update({
-            url: videoForm.url.trim(),
+            url: embedUrl,
             title: videoForm.title.trim(),
             description: videoForm.description.trim()
           })
@@ -408,7 +469,7 @@ export default function AdminDashboard() {
         const { error } = await supabase
           .from('videos')
           .insert({
-            url: videoForm.url.trim(),
+            url: embedUrl,
             title: videoForm.title.trim(),
             description: videoForm.description.trim()
           });
@@ -1525,14 +1586,19 @@ export default function AdminDashboard() {
                   <input
                     type="url"
                     value={videoForm.url}
-                    onChange={(e) => setVideoForm({...videoForm, url: e.target.value})}
-                    placeholder="https://www.youtube.com/embed/VIDEO_ID"
+                    onChange={handleVideoUrlChange}
+                    placeholder="https://youtu.be/VIDEO_ID or https://www.youtube.com/watch?v=VIDEO_ID"
                     className="w-full px-4 sm:px-6 py-3 sm:py-4 text-sm sm:text-base lg:text-lg border-2 border-gray-300 rounded-xl sm:rounded-2xl focus:ring-4 focus:ring-purple-200 focus:border-purple-600 transition-all duration-200 bg-gray-50"
                   />
                   <div className="mt-3 p-3 sm:p-4 bg-purple-50 rounded-xl sm:rounded-2xl border border-purple-200">
-                    <p className="text-xs sm:text-sm text-purple-700 font-medium">
-                      <strong>💡 Tip:</strong> Use YouTube embed URL format: https://www.youtube.com/embed/VIDEO_ID
+                    <p className="text-xs sm:text-sm text-purple-700 font-medium mb-2">
+                      <strong>📺 Supported YouTube URL formats:</strong>
                     </p>
+                    <ul className="text-xs sm:text-sm text-purple-600 space-y-1">
+                      <li>• https://youtu.be/VIDEO_ID</li>
+                      <li>• https://www.youtube.com/watch?v=VIDEO_ID</li>
+                      <li>• https://www.youtube.com/embed/VIDEO_ID</li>
+                    </ul>
                   </div>
                 </div>
 
@@ -1565,7 +1631,7 @@ export default function AdminDashboard() {
                 </div>
 
                 {/* Video Preview */}
-                {videoForm.url && (
+                {videoForm.url && isValidYouTubeUrl(videoForm.url) && (
                   <div>
                     <label className="block text-base sm:text-lg font-bold text-gray-700 mb-3 sm:mb-4">
                       Video Preview
@@ -1573,12 +1639,21 @@ export default function AdminDashboard() {
                     <div className="relative pb-[56.25%] h-0 rounded-xl sm:rounded-2xl overflow-hidden border-2 border-gray-300 shadow-lg">
                       <iframe
                         className="absolute top-0 left-0 w-full h-full"
-                        src={videoForm.url}
+                        src={convertToEmbedUrl(videoForm.url)}
                         title="Video Preview"
                         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                         allowFullScreen
                       ></iframe>
                     </div>
+                  </div>
+                )}
+
+                {/* URL Validation Message */}
+                {videoForm.url && !isValidYouTubeUrl(videoForm.url) && (
+                  <div className="p-3 sm:p-4 bg-red-50 rounded-xl sm:rounded-2xl border border-red-200">
+                    <p className="text-xs sm:text-sm text-red-700 font-medium">
+                      <strong>⚠️ Invalid URL:</strong> Please enter a valid YouTube URL. The supported formats are listed above.
+                    </p>
                   </div>
                 )}
               </div>
@@ -1593,7 +1668,8 @@ export default function AdminDashboard() {
                 </button>
                 <button
                   onClick={handleSaveVideo}
-                  className="flex-1 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white py-3 sm:py-4 px-6 sm:px-8 rounded-xl sm:rounded-2xl font-bold text-sm sm:text-base lg:text-lg transition-all duration-200 transform hover:-translate-y-1 shadow-xl hover:shadow-2xl flex items-center justify-center gap-2 sm:gap-3"
+                  disabled={!isValidYouTubeUrl(videoForm.url) && videoForm.url}
+                  className="flex-1 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 disabled:from-gray-400 disabled:to-gray-300 disabled:cursor-not-allowed text-white py-3 sm:py-4 px-6 sm:px-8 rounded-xl sm:rounded-2xl font-bold text-sm sm:text-base lg:text-lg transition-all duration-200 transform hover:-translate-y-1 shadow-xl hover:shadow-2xl flex items-center justify-center gap-2 sm:gap-3"
                 >
                   <Save className="w-4 h-4 sm:w-5 sm:h-5 lg:w-6 lg:h-6" />
                   {editingVideo ? 'Update Video' : 'Add Video'}
