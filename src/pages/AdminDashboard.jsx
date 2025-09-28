@@ -1144,8 +1144,8 @@ export default function AdminDashboard() {
                           <div className="p-4 sm:p-6">
                             <div className="flex justify-between items-start mb-3 sm:mb-4">
                               <h3 className="font-bold text-lg sm:text-xl text-gray-900 line-clamp-2 group-hover:text-emerald-600 transition-colors duration-200 flex-1 pr-2">{project.title}</h3>
-                              {/* Mobile: Always visible buttons, Desktop: Show on hover */}
-                              <div className="flex gap-2 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity duration-200 flex-shrink-0">
+                              {/* Fixed: Always visible on mobile, hidden on desktop until hover */}
+                              <div className="flex gap-2 lg:opacity-0 lg:group-hover:opacity-100 transition-opacity duration-200 flex-shrink-0">
                                 <button
                                   onClick={() => handleEditProject(project)}
                                   className="bg-blue-600 hover:bg-blue-700 text-white p-2 rounded-lg sm:rounded-xl transition-all duration-200 transform hover:scale-110"
@@ -1272,8 +1272,8 @@ export default function AdminDashboard() {
                             <div className="p-4 sm:p-6">
                               <div className="flex justify-between items-start mb-3 sm:mb-4">
                                 <h3 className="font-bold text-lg sm:text-xl text-gray-900 line-clamp-2 group-hover:text-purple-600 transition-colors duration-200 flex-1 pr-2">{video.title}</h3>
-                                {/* Mobile: Always visible buttons, Desktop: Show on hover */}
-                                <div className="flex gap-2 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity duration-200 flex-shrink-0">
+                                {/* Fixed: Always visible on mobile, hidden on desktop until hover */}
+                                <div className="flex gap-2 lg:opacity-0 lg:group-hover:opacity-100 transition-opacity duration-200 flex-shrink-0">
                                   <button
                                     onClick={() => handleEditVideo(video)}
                                     className="bg-blue-600 hover:bg-blue-700 text-white p-2 rounded-lg sm:rounded-xl transition-all duration-200 transform hover:scale-110"
@@ -1680,7 +1680,7 @@ export default function AdminDashboard() {
             </div>
           </div>
         </div>
-      )}
+      )} 
     </div>
   );
 }
