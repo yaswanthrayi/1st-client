@@ -139,13 +139,13 @@ export default function Footer() {
             </a>
           </div>
         </div>
+      </div>
 
-        {/* Developer Credit */}
-        <div className="mt-6 pt-4 border-t border-amber-600 text-center">
-          <p className="text-yellow-200 text-sm font-inter">
-            Website is made by Raj kumar
-          </p>
-        </div>
+      {/* Developer Credit - Very Bottom */}
+      <div className="bg-amber-900 py-2 text-center">
+        <p className="text-yellow-200 text-xs font-inter">
+          Website is made by Raj kumar
+        </p>
       </div>
     </footer>
   );
